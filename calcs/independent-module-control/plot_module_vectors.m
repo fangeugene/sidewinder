@@ -15,7 +15,7 @@ for xi=-size:size
         ys(xi+size + 1, yi+size + 1) = y;        
 
         [module_theta, module_r] = cart2pol(x, y);
-        [mag, ang] = independent_module_control(module_r, module_theta, 1, pi/4, 1);
+        [mag, ang] = independent_module_control(module_r, module_theta, 1, pi/4, pi/4);
         [vx, vy] = pol2cart(ang, mag);
 
         vxs(xi+size + 1, yi+size + 1) = vx;

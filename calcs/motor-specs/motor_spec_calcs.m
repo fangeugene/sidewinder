@@ -1,5 +1,5 @@
-WHEEL_DIA = 2 * 2.54 / 100; % m
-GEAR_REDUCTION = 1; % 1:GEAR_REDUCTION
+WHEEL_DIA = 1.625 * 2.54 / 100; % m
+GEAR_REDUCTION = 1.5; % 1:GEAR_REDUCTION
 ROBOT_MASS = 7; % kg
 EFFICIENCY = 0.9;
 SPEED_LOSS_CONSTANT = 0.9;
@@ -9,10 +9,12 @@ NUM_MODULES = 3;
 % MOTOR_CURVE = csvread('motor_specs/KIT-MTR-36-06-180.csv'); % [N*m, RPM]
 % p1 = polyfit(MOTOR_CURVE(:, 2), MOTOR_CURVE(:, 1), 1);
 % STALL_TORQUE = polyval(p1, 0); % N*m
-STALL_TORQUE = .5932; %N*m
+% STALL_TORQUE = .5932; %N*m Pololu 37D 19:1
+STALL_TORQUE = .12; %N*m Pololu 25D 9.7:1
 % p2 = polyfit(MOTOR_CURVE(:, 1), MOTOR_CURVE(:, 2), 1);
 % FREE_SPEED = polyval(p2, 0); % RPM
-FREE_SPEED = 500; %RPM
+% FREE_SPEED = 500; %RPM Pololu 37D 19:1
+FREE_SPEED = 1010; %RPM Pololu 25D 9.7:1
 TOP_LOAD_SPEED = SPEED_LOSS_CONSTANT * FREE_SPEED;
 
 %% Calculating Top Speed

@@ -36,8 +36,8 @@ loaded_force = loaded_torque * GEAR_REDUCTION / (WHEEL_DIA/2);
 resistance_factor = loaded_force / max_speed_loaded; % N / m/s
 resistance_factor_t = resistance_factor * (WHEEL_DIA/2) / GEAR_REDUCTION; % N*m / m/s
 
-cur_rpm = 0;
 cur_speed = 0;
+cur_rpm = cur_speed / pi / WHEEL_DIA * GEAR_REDUCTION * 60;
 cur_time = 0;
 speeds = zeros(sim_num_timesteps, 1);
 times = zeros(sim_num_timesteps, 1);

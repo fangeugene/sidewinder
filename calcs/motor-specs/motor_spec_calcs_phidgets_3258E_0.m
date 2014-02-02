@@ -17,8 +17,9 @@ FREE_RPM = 365; %RPM Phidgets 3258E_0 10:1
 p = polyfit([0; FREE_RPM], [STALL_TORQUE; 0], 1);
 
 % Sim params
+SIM_SECONDS = 1;
 SIM_TIMESTEP = 0.0001; % s
-SIM_NUM_STEPS = 10000;
+sim_num_timesteps = SIM_SECONDS / SIM_TIMESTEP;
 
 %% Shared calcs
 max_rpm_loaded = SPEED_LOSS_CONSTANT * FREE_RPM;
@@ -37,10 +38,10 @@ resistance_factor_t = resistance_factor * (WHEEL_DIA/2) / GEAR_REDUCTION; % N*m 
 cur_rpm = 0;
 cur_speed = 0;
 cur_time = 0;
-speeds = zeros(SIM_NUM_STEPS, 1);
-times = zeros(SIM_NUM_STEPS, 1);
+speeds = zeros(sim_num_timesteps, 1);
+times = zeros(sim_num_timesteps, 1);
 zero2speed = 0;
-for i=1:SIM_NUM_STEPS
+for i=1:sim_num_timesteps
     torque = polyval(p, cur_rpm);
     torque = torque - cur_speed * resistance_factor_t;
     

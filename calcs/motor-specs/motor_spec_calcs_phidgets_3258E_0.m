@@ -45,8 +45,8 @@ zero2speed = 0;
 for i=1:sim_num_timesteps
     torque = polyval(p, cur_rpm);
     torque = torque - cur_speed * resistance_factor_t;
-    
     force = NUM_MODULES * torque * GEAR_REDUCTION / (WHEEL_DIA/2);
+    
     % limit force based on friction
     if force > friction_cutoff
         force = friction_cutoff;

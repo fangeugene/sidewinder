@@ -45,12 +45,12 @@ for i=1:sim_num_timesteps
     torque = polyval(p, cur_rpm);
     torque = torque - cur_speed * resistance_factor_t;
     
-    force = torque * GEAR_REDUCTION / (WHEEL_DIA/2);
+    force = NUM_MODULES * torque * GEAR_REDUCTION / (WHEEL_DIA/2);
     if force > friction_cutoff
         force = friction_cutoff;
     end
     
-    accel = NUM_MODULES * force / ROBOT_MASS;
+    accel = force / ROBOT_MASS;
     d_speed = accel * SIM_TIMESTEP;
     cur_speed = cur_speed + d_speed;
     cur_rpm = cur_rpm + d_speed / WHEEL_DIA / pi * GEAR_REDUCTION * 60;

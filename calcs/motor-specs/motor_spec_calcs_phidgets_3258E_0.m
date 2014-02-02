@@ -32,6 +32,7 @@ max_linear_accel = NUM_MODULES * stall_force_at_wheel / ROBOT_MASS;
 loaded_torque = polyval(p, max_rpm_loaded);
 loaded_force = loaded_torque * GEAR_REDUCTION / (WHEEL_DIA/2);
 
+% back calculating the resistance factor
 resistance_factor = loaded_force / max_speed_loaded; % N / m/s
 resistance_factor_t = resistance_factor * (WHEEL_DIA/2) / GEAR_REDUCTION; % N*m / m/s
 
@@ -46,15 +47,19 @@ for i=1:sim_num_timesteps
     torque = torque - cur_speed * resistance_factor_t;
     
     force = NUM_MODULES * torque * GEAR_REDUCTION / (WHEEL_DIA/2);
+    % limit force based on friction
     if force > friction_cutoff
         force = friction_cutoff;
     end
     
+    % calculate change in speed for this timestep
     accel = force / ROBOT_MASS;
     d_speed = accel * SIM_TIMESTEP;
+    
     cur_speed = cur_speed + d_speed;
     cur_rpm = cur_rpm + d_speed / WHEEL_DIA / pi * GEAR_REDUCTION * 60;
     
+    % save zero to 95% speed time
     if zero2speed == 0 && cur_speed >= 0.95 * max_speed_loaded
         zero2speed = cur_time;
     end

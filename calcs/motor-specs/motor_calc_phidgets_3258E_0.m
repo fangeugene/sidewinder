@@ -1,5 +1,5 @@
-clc; clear; close all;
-
+function [max_speed_loaded,max_linear_accel,zero2speed,max_speed_rot,rotational_accel] ...
+    = motor_calc_phidgets_3258E_0(WHEEL_DIA,GEAR_REDUCTION)
 % General params
 NUM_MODULES = 3;
 ROBOT_MASS = 5; % kg
@@ -7,8 +7,8 @@ CoF = 0.5;
 friction_cutoff = CoF * ROBOT_MASS * 9.8; % N
 
 % Module params
-WHEEL_DIA = 2.375 * 2.54 / 100; % m
-GEAR_REDUCTION = 0.75; % 1:GEAR_REDUCTION
+WHEEL_DIA = WHEEL_DIA * 2.54 / 100; % m
+% GEAR_REDUCTION = 0.75; % 1:GEAR_REDUCTION
 SPEED_LOSS_CONSTANT = 0.8;
 
 % Motor params
@@ -70,17 +70,17 @@ for i=1:sim_num_timesteps
     cur_time = cur_time + SIM_TIMESTEP;
 end
 
-figure(1);
-hold on;
-plot(times, speeds);
-plot(times, ones(size(times)) * 0.95 * max_speed_loaded, 'k--');
-xlabel('Time (s)');
-ylabel('Speed (m/s)');
-hold off;
+% figure(1);
+% hold on;
+% plot(times, speeds);
+% plot(times, ones(size(times)) * 0.95 * max_speed_loaded, 'k--');
+% xlabel('Time (s)');
+% ylabel('Speed (m/s)');
+% hold off;
 
-disp(['Max linear speed: ', num2str(max_speed_loaded), ' m/s']);
-disp(['Max linear acceleration: ', num2str(max_linear_accel), ' m/s^2']);
-disp(['Zero to 95% max speed in: ', num2str(zero2speed), ' s']);
+% disp(['Max linear speed: ', num2str(max_speed_loaded), ' m/s']);
+% disp(['Max linear acceleration: ', num2str(max_linear_accel), ' m/s^2']);
+% disp(['Zero to 95% max speed in: ', num2str(zero2speed), ' s']);
 
 %% Calculating rotation specs
 module_radius = 0.2; % m
@@ -89,5 +89,8 @@ MOI = 3 * ROBOT_MASS/3 * module_radius^2;
 rotational_torque = 3*module_radius*stall_force_at_wheel;
 rotational_accel = rotational_torque/MOI;
 
-disp(['Max rotational speed: ', num2str(max_speed_rot), ' rad/s']);
-disp(['Max rotational acceleration: ', num2str(rotational_accel), ' rad/s^2']);
+% disp(['Max rotational speed: ', num2str(max_speed_rot), ' rad/s']);
+% disp(['Max rotational acceleration: ', num2str(rotational_accel), ' rad/s^2']);
+
+end
+

@@ -10,6 +10,7 @@ BeagleBone bone(PTD3, PTD2);
 DigitalOut led(LED_BLUE);
 
 volatile unsigned int i = 0;
+unsigned int n = 0;
 void encoder_isr_simulator() {
   led = !led;
   i += 1;
@@ -18,15 +19,29 @@ void encoder_isr_simulator() {
 
 void encoder_simulator_printer_thread(void const *args) {
   while (true) {
-    pc.printf("Count: %d\r\n", i);
+    pc.printf("Count: %d, %d\r\n", i, n);
     Thread::wait(1000);
   }
 }
 
-void send_data_thread(void const *args) {
+void get_msg_thread(void const *args) {
+  char msg[kMaxMsgSize];
+  while (true) {
+    if (bone.has_msg()) {
+      bone.read_msg(msg, kMaxMsgSize);
+      // Temporarily echo message back.
+      // TODO: parse message
+      bone.serial.printf("ECHO!\r\n");
+      bone.serial.printf(msg);
+    }
+    Thread::wait(10); // 100 Hz
+  }
+}
+
+void send_msg_thread(void const *args) {
   while (true) {
     bone.serial.printf("%d\r\n", imu::get_angle());
-    Thread::wait(20);
+    Thread::wait(20); // 50 Hz
   }
 }
 
@@ -42,15 +57,10 @@ int main() {
     gyro_integration_timer.start(imu::kGyroIntegrationMs);
 
     // Start threads
-    Thread sendDataThread(send_data_thread);
+    Thread getMsgThread(get_msg_thread);
+    Thread sendmsgThread(send_msg_thread);
 
-    char msg[kMaxMsgSize];
     while (true) {
-      Thread::wait(10);
-      if (bone.has_msg()) {
-        bone.read_msg(msg, kMaxMsgSize);
-        bone.serial.printf("ECHO!\r\n");
-        bone.serial.printf(msg);
-      }
+      n += 1;
     }
 }

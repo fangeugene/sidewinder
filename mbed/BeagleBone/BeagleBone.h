@@ -10,6 +10,8 @@
  */
 class BeagleBone {
  public:
+  MODSERIAL serial;
+
   /**
    * Constructor
    *
@@ -29,18 +31,12 @@ class BeagleBone {
    * @return Strings are available
    */
   bool has_msg(void);
-  /**
-   * Writes the string to the bone
-   * @param str The string to write
-   */
-  void write_msg(const char *str);
 
  private:
   static const int kBufferLen = 512;
   static const int kBaudRate = 115200;
   static const char kNewlineChar = '\n';
 
-  MODSERIAL serial_;
   void rxCallback_(MODSERIAL_IRQ_INFO *q);
   volatile unsigned int pending_msgs_;
 

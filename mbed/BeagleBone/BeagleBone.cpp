@@ -1,9 +1,9 @@
 #include "BeagleBone.h"
 
-BeagleBone::BeagleBone(PinName tx, PinName rx) : serial_(tx, rx, kBufferLen) {
+BeagleBone::BeagleBone(PinName tx, PinName rx) : serial(tx, rx, kBufferLen) {
   pending_msgs_ = 0;
-  serial_.baud(kBaudRate);
-  serial_.attach(this, &BeagleBone::rxCallback_, MODSERIAL::RxIrq);
+  serial.baud(kBaudRate);
+  serial.attach(this, &BeagleBone::rxCallback_, MODSERIAL::RxIrq);
 }
 
 bool BeagleBone::has_msg(void) {
@@ -14,15 +14,11 @@ void BeagleBone::read_msg(char *str, const int len) {
   char c = 0;
   int i;
   for (i = 0; c != kNewlineChar && i < len; i++) {
-    c = serial_.getc();
+    c = serial.getc();
     str[i] = c;
   }
   str[i] = 0; // end of string
   pending_msgs_ -= 1;
-}
-
-void BeagleBone::write_msg(const char *str) {
-  serial_.printf(str);
 }
 
 void BeagleBone::rxCallback_(MODSERIAL_IRQ_INFO *q) {

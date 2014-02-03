@@ -38,9 +38,9 @@ int main() {
       Thread::wait(10);
       if (bone.has_msg()) {
         bone.read_msg(msg, kMaxMsgSize);
-        bone.write_msg("ECHO!\r\n");
-        bone.write_msg(msg);
+        bone.serial.printf("ECHO!\r\n");
+        bone.serial.printf(msg);
       }
-      pc.printf("%d\r\n", imu::get_angle());
+      bone.serial.printf("%d\r\n", imu::get_angle());
     }
 }

@@ -8,6 +8,7 @@ ws.onopen = function() {
 };
 ws.onmessage = function (evt) {
   var received_msg = evt.data;
+  console.log(received_msg);
   var split_msg = received_msg.split(' ');
   if (split_msg[0] == '0') {
     $('#robot').attr('transform', 'rotate(' + -parseInt(split_msg[1]) + ', 100, 100)');
@@ -20,7 +21,7 @@ ws.onmessage = function (evt) {
     $('#module1power').attr('r', Math.log(parseInt(split_msg[3])));
     $('#module2power').attr('r', Math.log(parseInt(split_msg[5])));
   } else if (split_msg[0] == '9') {
-    if (split_msg[1] == '10') {
+    if (split_msg[1] == '1') {
       $('#enable-status').css('background-color', 'green');
       $('#enable-button').text('Disable!');
       enable = true;

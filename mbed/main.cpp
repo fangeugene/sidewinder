@@ -42,7 +42,7 @@ void get_msg_thread(void const *args) {
 
 void send_msg_thread(void const *args) {
   while (true) {
-    bone.serial.printf("%d\r\n", imu::get_angle());
+    bone.serial.printf("%d\n", imu::get_angle());
     Thread::wait(20); // 50 Hz
   }
 }

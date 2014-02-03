@@ -48,22 +48,22 @@ void send_msg_thread(void const *args) {
 }
 
 int main() {
-    // Temp for testing
-    Ticker t;
-    t.attach_us(&encoder_isr_simulator, 100);
-    Thread encoderSimThread(encoder_simulator_printer_thread);
-    // End temp for testing
+  // Temp for testing
+  Ticker t;
+  t.attach_us(&encoder_isr_simulator, 100);
+  Thread encoderSimThread(encoder_simulator_printer_thread);
+  // End temp for testing
 
-    // IMU setup
-    imu::gyro_calibrate();
-    RtosTimer gyro_integration_timer(imu::gyro_integrate);
-    gyro_integration_timer.start(imu::kGyroIntegrationMs);
+  // IMU setup
+  imu::gyro_calibrate();
+  RtosTimer gyro_integration_timer(imu::gyro_integrate);
+  gyro_integration_timer.start(imu::kGyroIntegrationMs);
 
-    // Start threads
-    Thread getMsgThread(get_msg_thread);
-    Thread sendmsgThread(send_msg_thread);
+  // Start threads
+  Thread getMsgThread(get_msg_thread);
+  Thread sendmsgThread(send_msg_thread);
 
-    while (true) {
-      n += 1;
-    }
+  while (true) {
+    n += 1;
+  }
 }

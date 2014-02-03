@@ -9,6 +9,7 @@ MODSERIAL pc(USBTX, USBRX);
 BeagleBone bone(PTD3, PTD2);
 DigitalOut led(LED_BLUE);
 
+// Temp for testing
 volatile unsigned int i = 0;
 unsigned int n = 0;
 void encoder_isr_simulator() {
@@ -23,6 +24,7 @@ void encoder_simulator_printer_thread(void const *args) {
     Thread::wait(1000);
   }
 }
+// End temp for testing
 
 void get_msg_thread(void const *args) {
   char msg[kMaxMsgSize];
@@ -50,6 +52,7 @@ int main() {
     Ticker t;
     t.attach_us(&encoder_isr_simulator, 100);
     Thread encoderSimThread(encoder_simulator_printer_thread);
+    // End temp for testing
 
     // IMU setup
     imu::gyro_calibrate();

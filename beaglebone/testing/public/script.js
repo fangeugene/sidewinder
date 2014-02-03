@@ -41,11 +41,9 @@ ws.onmessage = function (evt) {
   } else if (split_msg[0] == '9') {
     if (split_msg[1] == '1') {
       $('#enable-status').css('background-color', 'green');
-      $('#enable-button').text('Disable!');
       enable = true;
     } else {
       $('#enable-status').css('background-color', 'red');
-      $('#enable-button').text('Enable!');
       enable = false;
     }
   }
@@ -58,13 +56,14 @@ ws.onclose = function() {
 $(document).ready(function(){
   setInterval(function() { ws.send('9'); }, 50);  // watchdog
 
-  $('#enable-button').click(function() {
-    if (enable) {
-      ws.send('0 0');
-    } else {
-      ws.send('0 1');
+  var last_enable_msg = '';
+  function send_enable(e) {
+    var msg = '0 ' + e;
+    if (last_enable_msg != msg) {
+      ws.send(msg);
     }
-  });
+    last_enable_msg = msg;
+  }
 
   var theta = 0;
   var last_movement_msg = '';
@@ -116,8 +115,10 @@ $(document).ready(function(){
   setInterval(function() {
     if (controller == null) {
       send_movement(0, 0, 0);
+      send_enable(0);
     } else {
       send_movement(controller.axes[1], controller.axes[0], controller.axes[3]);
+      send_enable(controller.buttons[5]);
     }
   }, 20);
 });

@@ -30,7 +30,6 @@ void get_msg_thread(void const *args) {
   while (true) {
     if (bone.has_msg()) {
       bone.read_msg(msg, kMaxMsgSize);
-      pc.printf("Message received: %s\r\n", msg);
       switch (msg[0]) {
         case '0': {
           if (msg[2] == '0') {

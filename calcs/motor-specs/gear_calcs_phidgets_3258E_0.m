@@ -28,4 +28,5 @@ figure
 plot(Gearing,Z2Speed(1,:),'-x',Gearing,Z2Speed(2,:),'--o')
 xlabel('Gear Reduction')
 ylabel('Time (s)')
+title('Zero to 95% Speed')
 legend(num2str(Wheels))

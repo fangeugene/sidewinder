@@ -2,7 +2,7 @@ clc; clear; close all;
 
 % General params
 NUM_MODULES = 3;
-ROBOT_MASS = 5; % kg
+ROBOT_MASS = 6; % kg
 CoF = 0.5;
 friction_cutoff = CoF * ROBOT_MASS * 9.8; % N
 

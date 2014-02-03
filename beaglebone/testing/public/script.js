@@ -8,7 +8,6 @@ ws.onopen = function() {
 };
 ws.onmessage = function (evt) {
   var received_msg = evt.data;
-  console.log(received_msg);
   var split_msg = received_msg.split(' ');
   if (split_msg[0] == '0') {
     $('#robot').attr('transform', 'rotate(' + -parseInt(split_msg[1]) + ', 100, 100)');
@@ -17,9 +16,28 @@ ws.onmessage = function (evt) {
     $('#module1').attr('transform', 'rotate(' + -parseInt(split_msg[4]) + ', 35, 137.5)');
     $('#module2').attr('transform', 'rotate(' + -parseInt(split_msg[6]) + ', 165, 137.5)');
 
-    $('#module0power').attr('r', Math.log(parseInt(split_msg[1])));
-    $('#module1power').attr('r', Math.log(parseInt(split_msg[3])));
-    $('#module2power').attr('r', Math.log(parseInt(split_msg[5])));
+    var m0power = parseInt(split_msg[1]);
+    $('#module0power').attr('r', Math.log(Math.abs(m0power)));
+    if (m0power >= 0) {
+      $('#module0power').attr('cy', '15');
+    } else {
+      $('#module0power').attr('cy', '35');
+    }
+    var m1power = parseInt(split_msg[3]);
+    $('#module1power').attr('r', Math.log(Math.abs(m1power)));
+    if (m1power >= 0) {
+      $('#module1power').attr('cy', '127.5');
+    } else {
+      $('#module1power').attr('cy', '147.5');
+    }
+    var m2power = parseInt(split_msg[5]);
+    $('#module2power').attr('r', Math.log(Math.abs(m2power)));
+    if (m2power >= 0) {
+      $('#module2power').attr('cy', '127.5');
+    } else {
+      $('#module2power').attr('cy', '147.5');
+    }
+
   } else if (split_msg[0] == '9') {
     if (split_msg[1] == '1') {
       $('#enable-status').css('background-color', 'green');
@@ -38,7 +56,7 @@ ws.onclose = function() {
 };
 
 $(document).ready(function(){
-  setInterval(function() { ws.send('9'); }, 20);  // watchdog
+  setInterval(function() { ws.send('9'); }, 50);  // watchdog
 
   $('#enable-button').click(function() {
     if (enable) {
@@ -101,7 +119,7 @@ $(document).ready(function(){
     } else {
       send_movement(controller.axes[1], controller.axes[0], controller.axes[3]);
     }
-  }, 10);
+  }, 20);
 });
 
 function pad(num, size) {

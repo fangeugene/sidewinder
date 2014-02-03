@@ -23,24 +23,34 @@ void encoder_simulator_printer_thread(void const *args) {
   }
 }
 
+void send_data_thread(void const *args) {
+  while (true) {
+    bone.serial.printf("%d\r\n", imu::get_angle());
+    Thread::wait(20);
+  }
+}
+
 int main() {
+    // Temp for testing
     Ticker t;
     t.attach_us(&encoder_isr_simulator, 100);
-    Thread thread(encoder_simulator_printer_thread);
+    Thread encoderSimThread(encoder_simulator_printer_thread);
 
     // IMU setup
     imu::gyro_calibrate();
     RtosTimer gyro_integration_timer(imu::gyro_integrate);
     gyro_integration_timer.start(imu::kGyroIntegrationMs);
 
+    // Start threads
+    Thread sendDataThread(send_data_thread);
+
     char msg[kMaxMsgSize];
-    while(1) {
+    while (true) {
       Thread::wait(10);
       if (bone.has_msg()) {
         bone.read_msg(msg, kMaxMsgSize);
         bone.serial.printf("ECHO!\r\n");
         bone.serial.printf(msg);
       }
-      bone.serial.printf("%d\r\n", imu::get_angle());
     }
 }

@@ -13,7 +13,6 @@ DigitalOut led(LED_BLUE);
 volatile unsigned int i = 0;
 unsigned int n = 0;
 void encoder_isr_simulator() {
-  led = !led;
   i += 1;
   wait_us(2);
 }
@@ -31,12 +30,18 @@ void get_msg_thread(void const *args) {
   while (true) {
     if (bone.has_msg()) {
       bone.read_msg(msg, kMaxMsgSize);
-      // Temporarily echo message back.
-      // TODO: parse message
-      bone.serial.printf("ECHO!\r\n");
-      bone.serial.printf(msg);
+      pc.printf("Message received: %s\r\n", msg);
+      switch (msg[0]) {
+        case '0': {
+          if (msg[2] == '0') {
+            led = 0;
+          } else if (msg[2] == '1') {
+            led = 1;
+          }
+        }
+      }
     }
-    Thread::wait(10); // 100 Hz
+    Thread::wait(1); // 1000 Hz
   }
 }
 

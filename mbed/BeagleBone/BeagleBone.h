@@ -34,13 +34,13 @@ class BeagleBone {
    * @param str The string to write
    */
   void write_msg(const char *str);
+  MODSERIAL serial_;
 
  private:
   static const int kBufferLen = 512;
   static const int kBaudRate = 115200;
   static const char kNewlineChar = '\n';
 
-  MODSERIAL serial_;
   void rxCallback_(MODSERIAL_IRQ_INFO *q);
   volatile unsigned int pending_msgs_;
 

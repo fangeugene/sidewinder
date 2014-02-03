@@ -1,3 +1,4 @@
+#include "defines.h"
 #include "mbed.h"
 #include "rtos.h"
 #include "ITG3200.h"
@@ -60,11 +61,11 @@ int main() {
     //RtosTimer gyro_integration_timer(gyro_integration, osTimerPeriodic, (void *)0);
     //gyro_integration_timer.start(1);
 
-    char msg[100];
+    char msg[kMaxMsgSize];
     while(1) {
       Thread::wait(10);
       if (bone.has_msg()) {
-        bone.read_msg(msg, 100);
+        bone.read_msg(msg, kMaxMsgSize);
         bone.write_msg("ECHO!\r\n");
         bone.write_msg(msg);
       }

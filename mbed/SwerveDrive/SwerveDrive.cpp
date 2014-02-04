@@ -1,11 +1,11 @@
 #include "SwerveDrive.h"
 
 namespace swervedrive {
-  volatile int g_t_mag_setp;
-  volatile int g_t_head_setp;
-  volatile int g_rot_setp;
-  volatile int g_r[3];
-  volatile int g_theta[3];
+  int g_t_mag_setp;
+  int g_t_head_setp;
+  int g_rot_setp;
+  int g_r[3];
+  int g_theta[3];
 
   void init() {
     g_t_mag_setp = 0;

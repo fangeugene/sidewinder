@@ -26,7 +26,9 @@ namespace swervedrive {
   }
   
   void calculate_module_setpoints(int module_idx, float module_r, float module_theta, float t_mag_setp, float t_head_setp, float rot_setp) {
-    // temp P controller
+    t_head_setp -= float(imu::get_angle());
+
+    // temp P controller for rotational velocity
     float rot_vel = 0.2 * (rot_setp - float(imu::get_angle()));
 
     float rot_comp_mag = module_r * rot_vel;

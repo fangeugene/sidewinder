@@ -38,6 +38,7 @@ void get_msg_thread(void const *args) {
           } else if (msg[2] == '1') {
             led = 1;
           }
+          break;
         }
         case '1': {
           int t_mag_setp = (msg[2] - '0') * 100 + (msg[3] - '0') * 10 + (msg[4] - '0');
@@ -45,6 +46,7 @@ void get_msg_thread(void const *args) {
           t_head_setp -= 500;
           int rot_setp = 0;
           swervedrive::set_setpoints(t_mag_setp, t_head_setp, rot_setp);
+          break;
         }
       }
     }

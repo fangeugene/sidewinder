@@ -4,6 +4,7 @@
 #include "MODSERIAL.h"
 #include "BeagleBone.h"
 #include "IMU.h"
+#include "SwerveDrive.h"
 
 MODSERIAL pc(USBTX, USBRX);
 BeagleBone bone(PTD3, PTD2);
@@ -39,9 +40,11 @@ void get_msg_thread(void const *args) {
           }
         }
         case '1': {
-          int velocity = (msg[2] - '0') * 100 + (msg[3] - '0') * 10 + (msg[4] - '0');
-          int heading = (msg[6] - '0') * 100 + (msg[7] - '0') * 10 + (msg[8] - '0');
-          heading -= 500;
+          int t_mag_setp = (msg[2] - '0') * 100 + (msg[3] - '0') * 10 + (msg[4] - '0');
+          int t_head_setp = (msg[6] - '0') * 100 + (msg[7] - '0') * 10 + (msg[8] - '0');
+          t_head_setp -= 500;
+          int rot_setp = 0;
+          swervedrive::set_setpoints(t_mag_setp, t_head_setp, rot_setp);
         }
       }
     }
@@ -51,7 +54,14 @@ void get_msg_thread(void const *args) {
 
 void send_msg_thread(void const *args) {
   while (true) {
-    bone.serial.printf("%d\n", imu::get_angle());
+    bone.serial.printf("0 %d\n", imu::get_angle());
+    bone.serial.printf("1 %d %d %d %d %d %d\n",
+      swervedrive::read_r(0), swervedrive::read_theta(0),
+      swervedrive::read_r(1), swervedrive::read_theta(1),
+      swervedrive::read_r(2), swervedrive::read_theta(2));
+    //pc.printf("Module 0: %d, %d\r\n", swervedrive::read_r(0), swervedrive::read_theta(0));
+    //pc.printf("Module 1: %d, %d\r\n", swervedrive::read_r(1), swervedrive::read_theta(1));
+    //pc.printf("Module 2: %d, %d\r\n", swervedrive::read_r(2), swervedrive::read_theta(2));
     Thread::wait(20); // 50 Hz
   }
 }
@@ -67,10 +77,21 @@ int main() {
   imu::gyro_calibrate();
   RtosTimer gyro_integration_timer(imu::gyro_integrate);
   gyro_integration_timer.start(imu::kGyroIntegrationMs);
+  
+  // SwerveDrive setup
+  swervedrive::init();
+  RtosTimer module_control_timer(swervedrive::module_control);
+  module_control_timer.start(swervedrive::kModuleControlPeriodMs);
 
   // Start threads
   Thread getMsgThread(get_msg_thread);
   Thread sendmsgThread(send_msg_thread);
+  
+  Timer m;
+  m.start();
+  swervedrive::calculate_module_setpoints(0, 1.2, 2.3, 3.4, 4.5, 5.6);
+  m.stop();
+  pc.printf("Time: %d\r\n", m.read_us());
 
   while (true) {
     n += 1;

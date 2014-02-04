@@ -23,6 +23,12 @@ namespace imu {
   }
 
   int get_angle() {
-    return g_gyro_angle / 10000; // TODO: make a constant
+    int angle = g_gyro_angle / 10000; // TODO: make a constant
+    if (angle > 180) {
+      angle -= 360;
+    } else if (angle <= -180) {
+      angle += 360;
+    }
+    return angle;
   }
 }

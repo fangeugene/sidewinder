@@ -350,7 +350,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>TARGET_KL25Z,  TARGET_M0P,  TARGET_Freescale,  TOOLCHAIN_ARM_STD,  TOOLCHAIN_ARM,  __CORTEX_M0PLUS,  ARM_MATH_CM0PLUS,</Define>
               <Undefine></Undefine>
-              <IncludePath>.;  mbed-rtos;  mbed-rtos/rtx;  mbed-rtos/rtx/TARGET_M0P;  mbed-rtos/rtx/TARGET_M0P/TOOLCHAIN_ARM;  mbed-rtos/rtos;  mbed;  mbed/TARGET_KL25Z;  mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD;  ITG3200;  MODSERIAL;  MODSERIAL/Device; BeagleBone; IMU</IncludePath>
+              <IncludePath>.;  mbed-rtos;  mbed-rtos/rtx;  mbed-rtos/rtx/TARGET_M0P;  mbed-rtos/rtx/TARGET_M0P/TOOLCHAIN_ARM;  mbed-rtos/rtos;  mbed;  mbed/TARGET_KL25Z;  mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD;  ITG3200;  MODSERIAL;  MODSERIAL/Device; BeagleBone; IMU; SwerveDrive</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -395,7 +395,7 @@
             
               mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/mbed.ar
             
-            </Misc>
+</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -1219,6 +1219,16 @@
               <FileName>IMU.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\IMU\IMU.h</FilePath>
+            </File>
+            <File>
+              <FileName>SwerveDrive.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\SwerveDrive\SwerveDrive.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SwerveDrive.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SwerveDrive\SwerveDrive.h</FilePath>
             </File>
           </Files>
         </Group>

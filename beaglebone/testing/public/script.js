@@ -37,25 +37,27 @@ $(document).ready(function(){
     }
   });
 
-  $('#joystick').on('click', function(e) {
-    var y = parseFloat(e.pageX - this.offsetLeft);
-    var x = parseFloat(e.pageY - this.offsetTop);
-    x -= 100;
-    y -= 100;
-    x *= -1;
-    y *= -1;
+  $("#joystick").on("mousemove", $.throttle(20, function(e) {
+    if (e.which == 1) {
+      var y = parseFloat(e.pageX - this.offsetLeft);
+      var x = parseFloat(e.pageY - this.offsetTop);
+      x -= 100;
+      y -= 100;
+      x *= -1;
+      y *= -1;
 
-    var r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-    var theta = Math.atan(y/x);
-    if (x < 0) {
-      theta += Math.PI;
+      var r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+      var theta = Math.atan(y/x);
+      if (x < 0) {
+        theta += Math.PI;
+      }
+      if (theta > Math.PI) {
+        theta -= 2 * Math.PI;
+      }
+      theta = theta * 180 / Math.PI;
+      ws.send('1 ' + pad(parseInt(r), 3) +  ' ' + pad(parseInt(theta+500), 3));
     }
-    if (theta > Math.PI) {
-      theta -= 2 * Math.PI;
-    }
-    theta = theta * 180 / Math.PI;
-    ws.send('1 ' + pad(parseInt(r), 3) +  ' ' + pad(parseInt(theta+500), 3));
-  });
+  }));
 });
 
 function pad(num, size) {

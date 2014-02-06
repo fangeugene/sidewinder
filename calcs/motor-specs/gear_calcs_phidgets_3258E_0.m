@@ -1,7 +1,7 @@
 clc; clear; close all;
 
 %% Possibilities
-Gears = [48 24;44 28;40 32;36 36];
+Gears = [20 16;18 18;16 20];
 Gearing = Gears(:,2)./Gears(:,1);
 Wheels = [2;2.875];
 

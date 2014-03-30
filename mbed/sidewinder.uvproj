@@ -7,19 +7,19 @@
 
   <Targets>
     <Target>
-      <TargetName>mbed FRDM-KL25Z</TargetName>
+      <TargetName>mbed FRDM-KL46Z</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>MKL25Z128xxx4</Device>
+          <Device>MKL46Z256xxx4</Device>
           <Vendor>Freescale Semiconductor</Vendor>
-          <Cpu>IRAM(0x1FFFF000-0x1FFFFFFF) IRAM2(0x20000000-0x20002FFF) IROM(0x0-0x1FFFF) CLOCK(8000000) CPUTYPE("Cortex-M0+") ELITTLE</Cpu>
+          <Cpu>IRAM(0x1FFFE000-0x1FFFFFFF) IRAM2(0x20000000-0x20005FFF) IROM(0x0-0x3FFFF) CLOCK(8000000) CPUTYPE("Cortex-M0+") ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
-          <StartupFile>"STARTUP\Freescale\Kinetis\startup_MKL25Z4.s" ("Freescale MKL25Zxxxxxx4 Startup Code")</StartupFile>
-          <FlashDriverDll>ULP2CM3(-O2510 -S0 -C0 -FO15 -FD20000000 -FC800 -FN1 -FF0MK_P128_48MHZ -FS00 -FL020000)</FlashDriverDll>
-          <DeviceId>6533</DeviceId>
-          <RegisterFile>MKL25Z4.H</RegisterFile>
+          <StartupFile>"STARTUP\Freescale\Kinetis\startup_MKL46Z4.s" ("Freescale MKL46Zxxxxxx4 Startup Code")</StartupFile>
+          <FlashDriverDll>UL2CM3(-O2510 -S0 -C0 -FO15 -FD20000000 -FC800 -FN1 -FF0MK_P256_48MHZ -FS00 -FL040000)</FlashDriverDll>
+          <DeviceId>6834</DeviceId>
+          <RegisterFile>MKL46Z4.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -29,7 +29,8 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>SFD\Freescale\Kinetis\MKL25Z4.sfr</SFDFile>
+          <SFDFile>SFD\Freescale\Kinetis\MKL46Z4.sfr</SFDFile>
+          <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -44,7 +45,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\build\</OutputDirectory>
-          <OutputName>ME102B-135</OutputName>
+          <OutputName>sidewinder</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -75,7 +76,7 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>fromelf --bin -o build\ME102B-135_KL25Z.bin build\ME102B-135.axf</UserProg1Name>
+            <UserProg1Name>fromelf --bin -o build\sidewinder_KL46Z.bin build\sidewinder.axf</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -97,6 +98,7 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument></CustomArgument>
           <IncludeLibraryModules></IncludeLibraryModules>
+          <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
@@ -137,9 +139,11 @@
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>0</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>14</TargetSelection>
+          <TargetSelection>12</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -165,9 +169,14 @@
             <Capability>1</Capability>
             <DriverSelection>4105</DriverSelection>
           </Flash1>
+          <bUseTDR>1</bUseTDR>
           <Flash2>BIN\CMSIS_AGDI.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
+          <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
           <ArmAdsMisc>
@@ -266,13 +275,13 @@
               </Ocm6>
               <IRAM>
                 <Type>0</Type>
-                <StartAddress>0x1ffff000</StartAddress>
-                <Size>0x1000</Size>
+                <StartAddress>0x1fffe000</StartAddress>
+                <Size>0x2000</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x20000</Size>
+                <Size>0x40000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -297,7 +306,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x20000</Size>
+                <Size>0x40000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -321,13 +330,13 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20000000</StartAddress>
-                <Size>0x3000</Size>
+                <StartAddress>0x1fffe000</StartAddress>
+                <Size>0x2000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
-                <StartAddress>0x0</StartAddress>
-                <Size>0x0</Size>
+                <StartAddress>0x20000000</StartAddress>
+                <Size>0x6000</Size>
               </OCR_RVCT10>
             </OnChipMemories>
             <RvctStartVector></RvctStartVector>
@@ -346,11 +355,13 @@
             <wLevel>0</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
+            <uC99>0</uC99>
+            <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--gnu</MiscControls>
-              <Define>TARGET_KL25Z,  TARGET_M0P,  TARGET_Freescale,  TOOLCHAIN_ARM_STD,  TOOLCHAIN_ARM,  __CORTEX_M0PLUS,  ARM_MATH_CM0PLUS,</Define>
+              <Define>TARGET_KL46Z,  TARGET_M0P,  TARGET_Freescale,  TARGET_KLXX,  TOOLCHAIN_ARM_STD,  TOOLCHAIN_ARM,  __CORTEX_M0PLUS,  ARM_MATH_CM0PLUS,  MBED_BUILD_TIMESTAMP=1396163079.54,  __MBED__=1,</Define>
               <Undefine></Undefine>
-              <IncludePath>.;  mbed-rtos;  mbed-rtos/rtx;  mbed-rtos/rtx/TARGET_M0P;  mbed-rtos/rtx/TARGET_M0P/TOOLCHAIN_ARM;  mbed-rtos/rtos;  mbed;  mbed/TARGET_KL25Z;  mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD;  ITG3200;  MODSERIAL;  MODSERIAL/Device; BeagleBone; IMU; SwerveDrive; QEI</IncludePath>
+              <IncludePath>.;  mbed-rtos;  mbed-rtos/rtx;  mbed-rtos/rtx/TARGET_M0P;  mbed-rtos/rtx/TARGET_M0P/TOOLCHAIN_ARM;  mbed-rtos/rtos;  MAG3110;  mbed;  mbed/TARGET_KL46Z;  mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD;  ITG3200;  MODSERIAL;  MODSERIAL/Device;  QEI; BeagleBone; IMU; SwerveDrive</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -362,6 +373,7 @@
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
+            <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -378,24 +390,25 @@
             <useFile>0</useFile>
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x10000000</DataAddressRange>
-            <ScatterFile>mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/MKL25Z4.sct</ScatterFile>
+            <pXoBase></pXoBase>
+            <ScatterFile>mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD/MKL46Z4.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>
             
-              mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/sys.o
+              mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD/startup_MKL46Z4.o
             
-              mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/cmsis_nvic.o
+              mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD/system_MKL46Z4.o
             
-              mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/system_MKL25Z4.o
+              mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD/sys.o
             
-              mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/startup_MKL25Z4.o
+              mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD/cmsis_nvic.o
             
-              mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/retarget.o
+              mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD/retarget.o
             
-              mbed/TARGET_KL25Z/TOOLCHAIN_ARM_STD/mbed.ar
+              mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD/mbed.ar
             
-</Misc>
+            </Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -429,6 +442,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -445,6 +459,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -474,6 +490,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -490,6 +507,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -519,6 +538,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -535,6 +555,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -564,6 +586,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -580,6 +603,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -609,6 +634,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -625,6 +651,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -654,6 +682,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -670,6 +699,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -699,6 +730,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -715,6 +747,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -744,6 +778,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -760,6 +795,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -789,6 +826,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -805,6 +843,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -834,6 +874,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -850,6 +891,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -879,6 +922,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -895,6 +939,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -924,6 +970,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -940,6 +987,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -969,6 +1018,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -985,6 +1035,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -1014,6 +1066,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -1030,6 +1083,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -1059,6 +1114,7 @@
                   <StopOnExitCode>3</StopOnExitCode>
                   <CustomArgument></CustomArgument>
                   <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
                   <Cads>
@@ -1075,6 +1131,8 @@
                     <wLevel>0</wLevel>
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <useXO>2</useXO>
                     <VariousControls>
                       <MiscControls>--c99</MiscControls>
                       <Define></Define>
@@ -1109,6 +1167,11 @@
               <FileName>Mutex.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>mbed-rtos/rtos/Mutex.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MAG3110.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>MAG3110/MAG3110.cpp</FilePath>
             </File>
             <File>
               <FileName>ITG3200.cpp</FileName>
@@ -1196,6 +1259,11 @@
               <FilePath>MODSERIAL/Device/MODSERIAL_LPC1768.cpp</FilePath>
             </File>
             <File>
+              <FileName>QEI.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>QEI/QEI.cpp</FilePath>
+            </File>
+            <File>
               <FileName>BeagleBone.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\BeagleBone\BeagleBone.cpp</FilePath>
@@ -1204,11 +1272,6 @@
               <FileName>BeagleBone.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\BeagleBone\BeagleBone.h</FilePath>
-            </File>
-            <File>
-              <FileName>defines.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\defines.h</FilePath>
             </File>
             <File>
               <FileName>IMU.cpp</FileName>
@@ -1229,16 +1292,6 @@
               <FileName>SwerveDrive.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\SwerveDrive\SwerveDrive.h</FilePath>
-            </File>
-            <File>
-              <FileName>QEI.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\QEI\QEI.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>QEI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\QEI\QEI.h</FilePath>
             </File>
           </Files>
         </Group>

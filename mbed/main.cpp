@@ -8,7 +8,7 @@
 
 MODSERIAL pc(USBTX, USBRX);
 BeagleBone bone(PTD3, PTD2);
-DigitalOut led(LED_BLUE);
+DigitalOut led(LED1);
 
 // Temp for testing
 volatile unsigned int i = 0;

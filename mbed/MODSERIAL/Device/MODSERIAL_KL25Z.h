@@ -1,4 +1,4 @@
-#if defined(TARGET_KL25Z)
+#if defined(TARGET_KL46Z)
 
 #define MODSERIAL_IRQ_REG ((UART_Type*)_base)->C2
 #define DISABLE_TX_IRQ MODSERIAL_IRQ_REG &= ~(1UL << UART_C2_TIE_SHIFT)

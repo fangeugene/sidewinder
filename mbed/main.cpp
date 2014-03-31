@@ -70,9 +70,9 @@ void send_msg_thread(void const *args) {
 
 int main() {
   // Temp for testing
-  Ticker t;
-  t.attach_us(&encoder_isr_simulator, 30);
-  Thread encoderSimThread(encoder_simulator_printer_thread);
+  //Ticker t;
+  //t.attach_us(&encoder_isr_simulator, 30);
+  //Thread encoderSimThread(encoder_simulator_printer_thread);
   // End temp for testing
 
   // IMU setup

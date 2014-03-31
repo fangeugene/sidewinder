@@ -76,9 +76,9 @@ int main() {
   // End temp for testing
 
   // IMU setup
-  imu::gyro_calibrate();
-  RtosTimer gyro_integration_timer(imu::gyro_integrate);
-  gyro_integration_timer.start(imu::kGyroIntegrationMs);
+  //imu::gyro_calibrate();
+  //RtosTimer gyro_integration_timer(imu::gyro_integrate);
+  //gyro_integration_timer.start(imu::kGyroIntegrationMs);
   
   // SwerveDrive setup
   swervedrive::init();

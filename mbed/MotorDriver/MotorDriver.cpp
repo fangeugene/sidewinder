@@ -1,7 +1,7 @@
 #include "MotorDriver.h"
 
 MotorDriver::MotorDriver(PinName pwm, PinName fwd, PinName rev):
-                           _pwm(pwm), _fwd(fwd), _rev(rev) {
+                         _pwm(pwm), _fwd(fwd), _rev(rev) {
   _pwm.period_us(kPwmPeriodUs);
   _pwm.pulsewidth_us(0);
   _fwd = 0;

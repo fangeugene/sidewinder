@@ -169,7 +169,7 @@
             <Capability>1</Capability>
             <DriverSelection>4104</DriverSelection>
           </Flash1>
-          <bUseTDR>1</bUseTDR>
+          <bUseTDR>0</bUseTDR>
           <Flash2>BIN\CMSIS_AGDI.dll</Flash2>
           <Flash3>"MBed_Flash.bat" (build\sidewinder_KL46Z.bin F:\)</Flash3>
           <Flash4></Flash4>

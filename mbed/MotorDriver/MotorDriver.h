@@ -6,14 +6,14 @@
 const int kPwmPeriodUs = 100;
 
 class MotorDriver {
-	public:
+  public:
 	  MotorDriver(PinName pwm, PinName fwd, PinName rev);
     void setPower(int Power);
 
-	protected:
-		PwmOut _pwm;
+  protected:
+    PwmOut _pwm;
 	  DigitalOut _fwd;
-	  DigitalOut _rev;
+    DigitalOut _rev;
 };
 
 #endif // _MOTORDRIVER_H_

@@ -361,7 +361,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>TARGET_KL46Z,  TARGET_M0P,  TARGET_Freescale,  TARGET_KLXX,  TOOLCHAIN_ARM_STD,  TOOLCHAIN_ARM,  __CORTEX_M0PLUS,  ARM_MATH_CM0PLUS,  MBED_BUILD_TIMESTAMP=1396163079.54,  __MBED__=1,</Define>
               <Undefine></Undefine>
-              <IncludePath>.;  mbed-rtos;  mbed-rtos/rtx;  mbed-rtos/rtx/TARGET_M0P;  mbed-rtos/rtx/TARGET_M0P/TOOLCHAIN_ARM;  mbed-rtos/rtos;  MAG3110;  mbed;  mbed/TARGET_KL46Z;  mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD;  ITG3200;  MODSERIAL;  MODSERIAL/Device;  QEI; BeagleBone; IMU; SwerveDrive</IncludePath>
+              <IncludePath>.;  mbed-rtos;  mbed-rtos/rtx;  mbed-rtos/rtx/TARGET_M0P;  mbed-rtos/rtx/TARGET_M0P/TOOLCHAIN_ARM;  mbed-rtos/rtos;  MAG3110;  mbed;  mbed/TARGET_KL46Z;  mbed/TARGET_KL46Z/TOOLCHAIN_ARM_STD;  ITG3200;  MODSERIAL;  MODSERIAL/Device;  QEI; BeagleBone; IMU; SwerveDrive; MotorDriver</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1292,6 +1292,16 @@
               <FileName>SwerveDrive.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\SwerveDrive\SwerveDrive.h</FilePath>
+            </File>
+            <File>
+              <FileName>MotorDriver.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\MotorDriver\MotorDriver.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MotorDriver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\MotorDriver\MotorDriver.h</FilePath>
             </File>
           </Files>
         </Group>

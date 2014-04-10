@@ -103,11 +103,8 @@ int main() {
   Thread sendmsgThread(send_msg_thread);
 
   pc.printf("Starting!\r\n");
-  int angle = 0;
   while (true) {
     led = !led;
-    swervedrive->set_setpoints(1, angle, 0);
-    // angle += 90;
     Thread::wait(1000);
   }
 }

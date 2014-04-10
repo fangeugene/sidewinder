@@ -52,9 +52,13 @@ void SwerveDrive::_module_control() {
 
 
   // 16/3 clicks per degree
-  int m0_steer_error = m0_rot_setp - (_m0_steer_encoder.getPulses() * 3 / 16);
-  int m1_steer_error = m1_rot_setp - (_m1_steer_encoder.getPulses() * 3 / 16);
-  int m2_steer_error = m2_rot_setp - (_m2_steer_encoder.getPulses() * 3 / 16);
+  int m0_angle = _m0_steer_encoder.getPulses() * 3 / 16;
+  int m1_angle = _m1_steer_encoder.getPulses() * 3 / 16;
+  int m2_angle = _m2_steer_encoder.getPulses() * 3 / 16;
+
+  int m0_steer_error = closer_ang(m0_rot_setp, m0_angle) - m0_angle;
+  int m1_steer_error = closer_ang(m1_rot_setp, m1_angle) - m1_angle;
+  int m2_steer_error = closer_ang(m2_rot_setp, m2_angle) - m2_angle;
 
   _m0_steer.setPower(kPSteering * m0_steer_error / 10 - kDSteering * _last_m0_steer_error / 10);
   _m1_steer.setPower(kPSteering * m1_steer_error / 10 - kDSteering * _last_m1_steer_error / 10);

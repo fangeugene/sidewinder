@@ -1,4 +1,4 @@
-var ws = new WebSocket('ws://192.168.0.100:8081');
+var ws = new MozWebSocket('ws://' + window.location.hostname + ':8081');
 
 ws.onopen = function() {
   // Web Socket is connected, send data using send()
@@ -40,31 +40,48 @@ $(document).ready(function(){
   });
 
   var theta = 0;
-  $("#joystick").on("mousemove", $.throttle(20, function(e) {
-    if (e.which == 1) {
-      var y = parseFloat(e.pageX - this.offsetLeft);
-      var x = parseFloat(e.pageY - this.offsetTop);
-      x -= 100;
-      y -= 100;
-      x *= -1;
-      y *= -1;
+  var last_translation_msg = '';
+  function send_translation(x, y) {
+    x *= -100;
+    y *= -100;
 
-      var r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-      theta = Math.atan(y/x);
-      if (x <= 0) {
-        theta += Math.PI;
-      }
-      if (theta > Math.PI) {
-        theta -= 2 * Math.PI;
-      }
-      theta = theta * 180 / Math.PI;
-      ws.send('1 ' + pad(parseInt(r/2), 3) +  ' ' + pad(parseInt(theta+500), 3));
+    var r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    theta = Math.atan(y/x);
+    if (x <= 0) {
+      theta += Math.PI;
     }
-  }));
+    if (theta > Math.PI) {
+      theta -= 2 * Math.PI;
+    }
+    theta = theta * 180 / Math.PI;
+    var msg = '1 ' + pad(parseInt(r/2), 3) +  ' ' + pad(parseInt(theta+500), 3);
+    if (last_translation_msg != msg) {
+      ws.send(msg);
+      last_translation_msg = msg;
+    }
+  }
 
-  $("#joystick").on("mouseup", function() {
-    ws.send('1 001 ' + pad(parseInt(theta+500), 3));
-  });
+  // Joystick
+  var controller = null;
+  function connecthandler(e) {
+    $("#joystick-status").text("Joystick Connected!");
+    controller = e.gamepad;
+  }
+
+  function disconnecthandler(e) {
+    $("#joystick-status").text("Joystick Not Connected");
+    controller = null;
+  }
+  window.addEventListener("MozGamepadConnected", connecthandler);
+  window.addEventListener("MozGamepadDisconnected", disconnecthandler);
+
+  setInterval(function() {
+    if (controller == null) {
+      send_translation(0, 0);
+    } else {
+      send_translation(controller.axes[1], controller.axes[0]);
+    }
+  }, 10);
 });
 
 function pad(num, size) {

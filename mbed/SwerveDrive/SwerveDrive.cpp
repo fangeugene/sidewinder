@@ -1,11 +1,15 @@
 #include "SwerveDrive.h"
 
-SwerveDrive::SwerveDrive(MotorDriver m0_steer, MotorDriver m0_drive,
+SwerveDrive::SwerveDrive(IMU* imu,
+                         MotorDriver m0_steer, MotorDriver m0_drive,
                          MotorDriver m1_steer, MotorDriver m1_drive,
                          MotorDriver m2_steer, MotorDriver m2_drive):
                          _m0_steer(m0_steer), _m0_drive(m0_drive),
                          _m1_steer(m1_steer), _m1_drive(m1_drive),
                          _m2_steer(m2_steer), _m2_drive(m2_drive),
+                         _m0_steer_encoder(PTC7, PTA5, kNCPin, kSteerEncoderCPR, QEI::X4_ENCODING), _m0_drive_encoder(PTC6, PTA4, kNCPin, kDriveEncoderCPR, QEI::X4_ENCODING),
+                         _m1_steer_encoder(PTC4, PTA12, kNCPin, kSteerEncoderCPR, QEI::X4_ENCODING), _m1_drive_encoder(PTC0, PTD3, kNCPin, kDriveEncoderCPR, QEI::X4_ENCODING),
+                         _m2_steer_encoder(PTC11, PTC9, kNCPin, kSteerEncoderCPR, QEI::X4_ENCODING), _m2_drive_encoder(PTC10, PTC8, kNCPin, kDriveEncoderCPR, QEI::X4_ENCODING),
                          _module_control_timer(SwerveDrive::_module_control_static_callback, osTimerPeriodic, this) {
   _t_mag_setp_world = 0;
   _t_head_setp_world = 0;
@@ -17,6 +21,10 @@ SwerveDrive::SwerveDrive(MotorDriver m0_steer, MotorDriver m0_drive,
   m1_vel_setp = 0;
   m2_rot_setp = 0;
   m2_vel_setp = 0;
+
+  _last_m0_steer_error = 0;
+  _last_m1_steer_error = 0;
+  _last_m2_steer_error = 0;
 
   _module_control_timer.start(kModuleControlPeriodMs);
 }
@@ -37,14 +45,32 @@ void SwerveDrive::_module_control() {
   SwerveDrive::_calculate_module_setp(0, &m0_rot_setp, &m0_vel_setp);
   SwerveDrive::_calculate_module_setp(1, &m1_rot_setp, &m1_vel_setp);
   SwerveDrive::_calculate_module_setp(2, &m2_rot_setp, &m2_vel_setp);
+
+  _m0_drive.setPower(m0_vel_setp);
+  _m1_drive.setPower(m1_vel_setp);
+  _m2_drive.setPower(m2_vel_setp);
+
+
+  // 16/3 clicks per degree
+  int m0_steer_error = m0_rot_setp - (_m0_steer_encoder.getPulses() * 3 / 16);
+  int m1_steer_error = m1_rot_setp - (_m1_steer_encoder.getPulses() * 3 / 16);
+  int m2_steer_error = m2_rot_setp - (_m2_steer_encoder.getPulses() * 3 / 16);
+
+  _m0_steer.setPower(kPSteering * m0_steer_error / 10 - kDSteering * _last_m0_steer_error / 10);
+  _m1_steer.setPower(kPSteering * m1_steer_error / 10 - kDSteering * _last_m1_steer_error / 10);
+  _m2_steer.setPower(kPSteering * m2_steer_error / 10 - kDSteering * _last_m2_steer_error / 10);
+
+  _last_m0_steer_error = m0_steer_error;
+  _last_m1_steer_error = m1_steer_error;
+  _last_m2_steer_error = m2_steer_error;
 }
 
 void SwerveDrive::_calculate_module_setp(int m_idx, int *m_rot_setp, int *m_vel_setp) {
   // TODO: use integer arithmetic
-  float t_head_setp_robot = float(_t_head_setp_world) - float(imu::get_angle());  // convert from world frame to robot frame
+  float t_head_setp_robot = float(_t_head_setp_world) - float(_imu->get_angle());  // convert from world frame to robot frame
 
   // TODO: temp P controller for rotational velocity
-  float rot_vel = 0.2 * (_rot_setp_world - float(imu::get_angle()));
+  float rot_vel = 0.2 * (_rot_setp_world - float(_imu->get_angle()));
 
   float rot_comp_mag = kModuleRadiusCm * rot_vel;
   float rot_comp_ang = (kModuleTheta[m_idx] + 90) * 3.14159 / 180;

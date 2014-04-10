@@ -191,15 +191,18 @@ typedef enum {
     PTE30 = 0x4078,
     PTE31 = 0x407c,
 
-    LED_RED = PTB18,
-    LED_GREEN = PTB19,
-    LED_BLUE = PTD1,
+    LED_RED = PTE29,
+    LED_GREEN = PTD5,
 
     // mbed original LED naming
-    LED1 = LED_BLUE,
-    LED2 = LED_GREEN,
-    LED3 = LED_RED,
+    LED1 = LED_GREEN,
+    LED2 = LED_RED,
+    LED3 = LED_GREEN,
     LED4 = LED_RED,
+
+    //Push buttons
+    SW1 = PTC3,
+    SW3 = PTC12,
 
     // USB Pins
     USBTX = PTA2,
@@ -208,18 +211,18 @@ typedef enum {
     // Arduino Headers
     D0 = PTA1,
     D1 = PTA2,
-    D2 = PTD4,
+    D2 = PTD3,
     D3 = PTA12,
     D4 = PTA4,
     D5 = PTA5,
     D6 = PTC8,
     D7 = PTC9,
     D8 = PTA13,
-    D9 = PTD5,
-    D10 = PTD0,
-    D11 = PTD2,
-    D12 = PTD3,
-    D13 = PTD1,
+    D9 = PTD2,
+    D10 = PTD4,
+    D11 = PTD6,
+    D12 = PTD7,
+    D13 = PTD5,
     D14 = PTE0,
     D15 = PTE1,
 
@@ -230,14 +233,22 @@ typedef enum {
     A4 = PTC2,
     A5 = PTC1,
 
+    I2C_SCL = D15,
+    I2C_SDA = D14,
+
+    TSI_ELEC0 = PTB16,
+    TSI_ELEC1 = PTB17,
+
     // Not connected
     NC = (int)0xFFFFFFFF
 } PinName;
 
-/* PullDown not available for KL25 */
+/* Pull modes for input pins */
 typedef enum {
     PullNone = 0,
-    PullUp = 2,
+    PullDown = 2,
+    PullUp = 3,
+    PullDefault = PullUp
 } PinMode;
 
 #ifdef __cplusplus

@@ -1,14 +1,14 @@
 clc; clear; close all;
 
 %% Possibilities
-Gears = [20 16;18 18;16 20];
+Gears = [52 28;48 32;44 36;40 40];
 Gearing = Gears(:,2)./Gears(:,1);
-Wheels = [2;2.875];
+Wheels = [1.875;2];
 
 for i = 1:length(Wheels)
     for j = 1:length(Gearing)
         [MaxSpeedL(i,j),MaxAccelL(i,j),Z2Speed(i,j),MaxSpeedR(i,j),MaxAccelR(i,j)] ...
-    = motor_calc_phidgets_3258E_0(Wheels(i),Gearing(j));
+    = motor_calc_pololu_37Dx52L(Wheels(i),Gearing(j));
     end
 end
 

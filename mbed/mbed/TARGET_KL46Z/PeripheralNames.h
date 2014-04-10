@@ -23,6 +23,11 @@ extern "C" {
 #endif
 
 typedef enum {
+    OSC32KCLK = 0,
+    RTC_CLKIN = 2
+} RTCName;
+
+typedef enum {
     UART_0 = (int)UART0_BASE,
     UART_1 = (int)UART1_BASE,
     UART_2 = (int)UART2_BASE
@@ -52,7 +57,7 @@ typedef enum {
     PWM_10 = (2 << TPM_SHIFT) | (1)   // TPM2 CH1
 } PWMName;
 
-#define CHANNELS_A_SHIFT 5
+#define CHANNELS_A_SHIFT    5
 typedef enum {
     ADC0_SE0  =  0,
     ADC0_SE3  =  3,
@@ -81,31 +86,6 @@ typedef enum {
     SPI_0 = (int)SPI0_BASE,
     SPI_1 = (int)SPI1_BASE,
 } SPIName;
-
-// Default peripherals
-#define MBED_SPI0         PTD2, PTD3, PTD1, PTD0
-
-#define MBED_UART0        PTC4, PTC3
-#define MBED_UART1        PTD3, PTD2
-#define MBED_UARTUSB      PTA2, PTA1
-
-#define MBED_I2C0         PTC9, PTC8
-#define MBED_I2C1         PTE1, PTE0
-
-#define MBED_ANALOGOUT0   PTE30
-
-#define MBED_ANALOGIN0    PTC2
-#define MBED_ANALOGIN1    PTB3
-#define MBED_ANALOGIN2    PTB2
-#define MBED_ANALOGIN3    PTB1
-#define MBED_ANALOGIN4    PTB0
-
-#define MBED_PWMOUT0      PTD4
-#define MBED_PWMOUT1      PTA12
-#define MBED_PWMOUT2      PTA4
-#define MBED_PWMOUT3      PTA5
-#define MBED_PWMOUT4      PTC8
-#define MBED_PWMOUT5      PTC9
 
 #ifdef __cplusplus
 }

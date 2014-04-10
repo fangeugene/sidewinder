@@ -1,4 +1,4 @@
-#ifdef TARGET_KL25Z
+#ifdef TARGET_KL46Z
 #include "MODSERIAL.h"
 
 void MODSERIAL::setBase(void ) {

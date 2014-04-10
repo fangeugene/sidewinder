@@ -7,6 +7,8 @@
 #include "MotorDriver.h"
 #include "IMU.h"
 
+const int kWatchdogTimeoutMs = 250;
+
 const int kModuleControlPeriodMs = 10;
 const int kModuleRadiusCm = 20;
 const int kModuleTheta[3] = {0, 120, -120};  // location of module relative to base
@@ -23,6 +25,9 @@ class SwerveDrive {
                 MotorDriver m0_steer, MotorDriver m0_drive,
                 MotorDriver m1_steer, MotorDriver m1_drive,
                 MotorDriver m2_steer, MotorDriver m2_drive);
+    void enable();
+    void disable();
+    void feed_watchdog();
     void set_setpoints(int t_mag_setp_world, int t_head_setp_world, int rot_vel_setp);
 
     int m0_rot_setp;
@@ -49,6 +54,9 @@ class SwerveDrive {
     QEI _m2_drive_encoder;
 
     RtosTimer _module_control_timer;
+    RtosTimer _watchdog_timer;
+
+    bool _enabled;
 
     int _t_mag_setp_world;
     int _t_head_setp_world;
@@ -60,6 +68,7 @@ class SwerveDrive {
     int _last_m2_steer_error;
 
     static void _module_control_static_callback(void const *args);
+    static void _watchdog_static_callback(void const *args);
     void _module_control();
     void _calculate_module_setp(int m_idx, int *m_rot_setp, int *m_vel_setp);
 };

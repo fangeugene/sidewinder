@@ -10,7 +10,10 @@ SwerveDrive::SwerveDrive(IMU* imu,
                          _m0_steer_encoder(PTC7, PTA5, kNCPin, kSteerEncoderCPR, QEI::X4_ENCODING), _m0_drive_encoder(PTC6, PTA4, kNCPin, kDriveEncoderCPR, QEI::X4_ENCODING),
                          _m1_steer_encoder(PTC4, PTA12, kNCPin, kSteerEncoderCPR, QEI::X4_ENCODING), _m1_drive_encoder(PTC0, PTD3, kNCPin, kDriveEncoderCPR, QEI::X4_ENCODING),
                          _m2_steer_encoder(PTC11, PTC9, kNCPin, kSteerEncoderCPR, QEI::X4_ENCODING), _m2_drive_encoder(PTC10, PTC8, kNCPin, kDriveEncoderCPR, QEI::X4_ENCODING),
-                         _module_control_timer(SwerveDrive::_module_control_static_callback, osTimerPeriodic, this) {
+                         _module_control_timer(SwerveDrive::_module_control_static_callback, osTimerPeriodic, this),
+                         _watchdog_timer(SwerveDrive::_watchdog_static_callback, osTimerPeriodic, this) {
+  _enabled = false;
+
   _t_mag_setp_world = 0;
   _t_head_setp_world = 0;
   _rot_setp_world = 0;
@@ -27,6 +30,25 @@ SwerveDrive::SwerveDrive(IMU* imu,
   _last_m2_steer_error = 0;
 
   _module_control_timer.start(kModuleControlPeriodMs);
+  _watchdog_timer.start(kWatchdogTimeoutMs);
+}
+
+void SwerveDrive::enable() {
+  _enabled = true;
+}
+
+void SwerveDrive::disable() {
+  _enabled = false;
+}
+
+void SwerveDrive::_watchdog_static_callback(void const *args) {
+  // Static callback -- see https://mbed.org/forum/mbed/topic/4388/ for more info
+  SwerveDrive *instance = (SwerveDrive*)args;
+  instance->disable();
+}
+
+void SwerveDrive::feed_watchdog() {
+  _watchdog_timer.start(kWatchdogTimeoutMs);
 }
 
 void SwerveDrive::set_setpoints(int t_mag_setp_world, int t_head_setp_world, int rot_vel_setp) {
@@ -42,6 +64,16 @@ void SwerveDrive::_module_control_static_callback(void const *args) {
 }
 
 void SwerveDrive::_module_control() {
+  if (!_enabled) {
+    _m0_drive.setPower(0);
+    _m1_drive.setPower(0);
+    _m2_drive.setPower(0);
+    _m0_steer.setPower(0);
+    _m1_steer.setPower(0);
+    _m2_steer.setPower(0);
+    return;
+  }
+
   SwerveDrive::_calculate_module_setp(0, &m0_rot_setp, &m0_vel_setp);
   SwerveDrive::_calculate_module_setp(1, &m1_rot_setp, &m1_vel_setp);
   SwerveDrive::_calculate_module_setp(2, &m2_rot_setp, &m2_vel_setp);

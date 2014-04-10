@@ -9,7 +9,6 @@
 
 MODSERIAL pc(USBTX, USBRX);
 BeagleBone bone(PTE16, PTE17);
-DigitalOut led(LED2);
 
 MotorDriver m0_steer(PTB1, PTA6, PTD6); // 2
 MotorDriver m0_drive(PTB2, PTA7, PTD4); // 3
@@ -28,10 +27,10 @@ void get_msg_thread(void const *args) {
       bone.read_msg(msg, kMaxMsgSize);
       switch (msg[0]) {
         case '0': {
-          if (msg[2] == '0') {
-            led = 0;
-          } else if (msg[2] == '1') {
-            led = 1;
+          if (msg[2] == '1') {
+            swervedrive->enable();
+          } else {
+            swervedrive->disable();
           }
           break;
         }
@@ -43,6 +42,10 @@ void get_msg_thread(void const *args) {
           rot_vel_setp -= 500;
           int rot_setp = 0;
           swervedrive->set_setpoints(t_mag_setp, t_head_setp, rot_vel_setp);
+          break;
+        }
+        case '9': {
+          swervedrive->feed_watchdog();
           break;
         }
       }
@@ -58,9 +61,7 @@ void send_msg_thread(void const *args) {
       swervedrive->m0_vel_setp, swervedrive->m0_rot_setp,
       swervedrive->m1_vel_setp, swervedrive->m1_rot_setp,
       swervedrive->m2_vel_setp, swervedrive->m2_rot_setp);
-    // pc.printf("Module 0: %d, %d\r\n", swervedrive->m0_vel_setp, swervedrive->m0_rot_setp);
-    // pc.printf("Module 1: %d, %d\r\n", swervedrive->m1_vel_setp, swervedrive->m1_rot_setp);
-    // pc.printf("Module 2: %d, %d\r\n", swervedrive->m2_vel_setp, swervedrive->m2_rot_setp);
+    bone.serial.printf("9 %d", swervedrive->_enabled);
     Thread::wait(20); // 50 Hz
   }
 }
@@ -84,7 +85,6 @@ int main() {
 
   pc.printf("Starting!\r\n");
   while (true) {
-    led = !led;
     Thread::wait(1000);
   }
 }

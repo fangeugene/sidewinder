@@ -54,9 +54,11 @@ IMU* imu;
          case '1': {
            int t_mag_setp = (msg[2] - '0') * 100 + (msg[3] - '0') * 10 + (msg[4] - '0');
            int t_head_setp = (msg[6] - '0') * 100 + (msg[7] - '0') * 10 + (msg[8] - '0');
+           int rot_vel_setp = (msg[10] - '0') * 100 + (msg[11] - '0') * 10 + (msg[12] - '0');
            t_head_setp -= 500;
+           rot_vel_setp -= 500;
            int rot_setp = 0;
-           swervedrive->set_setpoints(t_mag_setp, t_head_setp, rot_setp);
+           swervedrive->set_setpoints(t_mag_setp, t_head_setp, rot_vel_setp);
            break;
          }
        }

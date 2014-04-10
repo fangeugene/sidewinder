@@ -23,7 +23,7 @@ class SwerveDrive {
                 MotorDriver m0_steer, MotorDriver m0_drive,
                 MotorDriver m1_steer, MotorDriver m1_drive,
                 MotorDriver m2_steer, MotorDriver m2_drive);
-    void set_setpoints(int t_mag_setp_world, int t_head_setp_world, int rot_setp_world);
+    void set_setpoints(int t_mag_setp_world, int t_head_setp_world, int rot_vel_setp);
 
     int m0_rot_setp;
     int m0_vel_setp;
@@ -53,6 +53,7 @@ class SwerveDrive {
     int _t_mag_setp_world;
     int _t_head_setp_world;
     int _rot_setp_world;
+    int _rot_vel_setp;
 
     int _last_m0_steer_error;
     int _last_m1_steer_error;

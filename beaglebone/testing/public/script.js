@@ -1,11 +1,11 @@
-var ws = new WebSocket('ws://192.168.1.100:8081');
+var ws = new WebSocket('ws://192.168.0.100:8081');
 
 ws.onopen = function() {
   // Web Socket is connected, send data using send()
   ws.send("Browser says HIHIHI!");
   console.log("Message is sent...");
 };
-ws.onmessage = function (evt) { 
+ws.onmessage = function (evt) {
   var received_msg = evt.data;
   var split_msg = received_msg.split(' ');
   if (split_msg[0] == '0') {
@@ -20,12 +20,14 @@ ws.onmessage = function (evt) {
     $('#module2power').attr('r', Math.log(parseInt(split_msg[5])));
   }
 };
-ws.onclose = function() { 
+ws.onclose = function() {
   // websocket is closed.
-  console.log("Connection is closed..."); 
+  console.log("Connection is closed...");
 };
 
 $(document).ready(function(){
+  setInterval(function() { ws.send('9'); }, 100);  // watchdog
+
   var ledon = false;
   $('#button1').click(function() {
     if (ledon) {
@@ -37,6 +39,7 @@ $(document).ready(function(){
     }
   });
 
+  var theta = 0;
   $("#joystick").on("mousemove", $.throttle(20, function(e) {
     if (e.which == 1) {
       var y = parseFloat(e.pageX - this.offsetLeft);
@@ -47,17 +50,21 @@ $(document).ready(function(){
       y *= -1;
 
       var r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-      var theta = Math.atan(y/x);
-      if (x < 0) {
+      theta = Math.atan(y/x);
+      if (x <= 0) {
         theta += Math.PI;
       }
       if (theta > Math.PI) {
         theta -= 2 * Math.PI;
       }
       theta = theta * 180 / Math.PI;
-      ws.send('1 ' + pad(parseInt(r), 3) +  ' ' + pad(parseInt(theta+500), 3));
+      ws.send('1 ' + pad(parseInt(r/2), 3) +  ' ' + pad(parseInt(theta+500), 3));
     }
   }));
+
+  $("#joystick").on("mouseup", function() {
+    ws.send('1 001 ' + pad(parseInt(theta+500), 3));
+  });
 });
 
 function pad(num, size) {

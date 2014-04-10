@@ -14,7 +14,7 @@ const PinName kNCPin = PTA17;
 const int kDriveEncoderCPR = 48;
 const int kSteerEncoderCPR = 192;
 
-const int kPSteering = 250;
+const int kPSteering = 200;
 const int kDSteering = 150;
 
 class SwerveDrive {

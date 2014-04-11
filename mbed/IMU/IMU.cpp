@@ -29,6 +29,7 @@ IMU::IMU(PinName gyro_sda, PinName gyro_scl, PinName mag_sda, PinName mag_scl):
 // }
 
 int IMU::get_angle() {
+  return 0;
   int xVal, yVal, zVal;
   _mag.getValues(&xVal, &yVal, &zVal);
 

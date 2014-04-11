@@ -17,6 +17,8 @@ MotorDriver m1_drive(PTC2, PTC13, PTA13);   // 5
 MotorDriver m2_steer(PTE31, PTA15, PTD5);  // 0
 MotorDriver m2_drive(PTB0, PTA14, PTD7);  // 1
 
+DigitalOut led(LED_RED);
+
 SwerveDrive* swervedrive;
 IMU* imu;
 
@@ -61,7 +63,7 @@ void send_msg_thread(void const *args) {
       swervedrive->m0_vel_setp, swervedrive->m0_rot_setp,
       swervedrive->m1_vel_setp, swervedrive->m1_rot_setp,
       swervedrive->m2_vel_setp, swervedrive->m2_rot_setp);
-    bone.serial.printf("9 %d", swervedrive->_enabled);
+    bone.serial.printf("9 %d\n", swervedrive->_enabled);
     Thread::wait(20); // 50 Hz
   }
 }
@@ -85,6 +87,7 @@ int main() {
 
   pc.printf("Starting!\r\n");
   while (true) {
-    Thread::wait(1000);
+    led = !led;
+    Thread::wait(100);
   }
 }

@@ -12,17 +12,22 @@ const int kGyroIntegrationMs = 1;
 class IMU {
   public:
     IMU(PinName gyro_sda, PinName gyro_scl, PinName mag_sda, PinName mag_scl);
-    float get_angle();
+    int get_angle();
 
-  protected:
-    ITG3200 _gyro;
+  // protected:
+    // ITG3200 _gyro;
     MAG3110 _mag;
 
-    int _gyro_offset;
-    int _gyro_angle;
+    int _minX;
+    int _maxX;
+    int _minY;
+    int _maxY;
 
-    void _gyro_calibrate();
-    void _gyro_integrate(void const *args);
+//     int _gyro_offset;
+//     int _gyro_angle;
+
+//     void _gyro_calibrate();
+//     void _gyro_integrate(void const *args);
 };
 
 #endif // _IMU_H_

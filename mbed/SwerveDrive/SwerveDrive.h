@@ -37,6 +37,8 @@ class SwerveDrive {
     int m2_rot_setp;
     int m2_vel_setp;
 
+    int angle;
+
   // protected:
     IMU* _imu;
     MotorDriver _m0_steer;

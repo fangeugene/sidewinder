@@ -103,7 +103,7 @@ void SwerveDrive::_module_control() {
 
 void SwerveDrive::_calculate_module_setp(int m_idx, int *m_rot_setp, int *m_vel_setp) {
   // TODO: use integer arithmetic
-  float t_head_setp_robot = float(_t_head_setp_world) - float(_imu->get_angle());  // convert from world frame to robot frame
+  float t_head_setp_robot = float(_t_head_setp_world) - float(angle);  // convert from world frame to robot frame
 
   // TODO: temp P controller for rotational velocity
   // float rot_vel = 0.2 * (_rot_setp_world - float(_imu->get_angle()));

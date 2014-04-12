@@ -59,6 +59,7 @@ void get_msg_thread(void const *args) {
 void send_msg_thread(void const *args) {
   while (true) {
     bone.serial.printf("0 %d\n", imu->get_angle());
+    swervedrive->angle = imu->get_angle();
     bone.serial.printf("1 %d %d %d %d %d %d\n",
       swervedrive->m0_vel_setp, swervedrive->m0_rot_setp,
       swervedrive->m1_vel_setp, swervedrive->m1_rot_setp,

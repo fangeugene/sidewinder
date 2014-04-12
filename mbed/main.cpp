@@ -69,23 +69,19 @@ void send_msg_thread(void const *args) {
 }
 
 int main() {
+  pc.printf("Starting!\r\n");
   // Constructor for classes with threads must be called within main()
-  imu = new IMU(PTC9, PTC8, PTE25, PTE24);
+  imu = new IMU(PTE0, PTE1, PTE25, PTE24);
   swervedrive = new SwerveDrive(imu,
                                 m0_steer, m0_drive,
                                 m1_steer, m1_drive,
                                 m2_steer, m2_drive);
 
-  // IMU setup
-  // imu::gyro_calibrate();
-  // RtosTimer gyro_integration_timer(imu::gyro_integrate);
-  // gyro_integration_timer.start(imu::kGyroIntegrationMs);
-
-  // Start threads
+  // Start msg threads
   Thread getMsgThread(get_msg_thread);
   Thread sendmsgThread(send_msg_thread);
 
-  pc.printf("Starting!\r\n");
+  pc.printf("Startup Complete!\r\n");
   while (true) {
     led = !led;
     Thread::wait(100);

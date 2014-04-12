@@ -4,7 +4,7 @@
 #include "mbed.h"
 #include "rtos.h"
 #include "ITG3200.h"
-#include "MAG3110.h"
+// #include "MAG3110.h"
 
 const int kGyroCalibCycles = 1000;
 const int kGyroIntegrationMs = 1;
@@ -15,19 +15,18 @@ class IMU {
     int get_angle();
 
   // protected:
-    // ITG3200 _gyro;
-    MAG3110 _mag;
+    ITG3200 _gyro;
+    // MAG3110 _mag;
 
-    int _minX;
-    int _maxX;
-    int _minY;
-    int _maxY;
+    RtosTimer _gyro_integration_timer;
+    Semaphore ts;
 
-//     int _gyro_offset;
-//     int _gyro_angle;
+    int _gyro_offset;
+    int _gyro_angle;
 
-//     void _gyro_calibrate();
-//     void _gyro_integrate(void const *args);
+    void _gyro_calibrate();
+    static void _gyro_integration_static_callback(void const *args);
+    void _gyro_integrate();
 };
 
 #endif // _IMU_H_

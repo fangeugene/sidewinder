@@ -25,6 +25,8 @@ SwerveDrive::SwerveDrive(IMU* imu,
   m2_rot_setp = 0;
   m2_vel_setp = 0;
 
+  _last_heading_error = 0;
+
   _last_m0_steer_error = 0;
   _last_m1_steer_error = 0;
   _last_m2_steer_error = 0;
@@ -51,10 +53,10 @@ void SwerveDrive::feed_watchdog() {
   _watchdog_timer.start(kWatchdogTimeoutMs);
 }
 
-void SwerveDrive::set_setpoints(int t_mag_setp_world, int t_head_setp_world, int rot_vel_setp) {
+void SwerveDrive::set_setpoints1(int t_mag_setp_world, int t_head_setp_world, int rot_vel) {
   _t_mag_setp_world = t_mag_setp_world;
   _t_head_setp_world = t_head_setp_world;
-  _rot_vel_setp = rot_vel_setp;
+  _rot_vel = rot_vel / 100;
 }
 
 void SwerveDrive::_module_control_static_callback(void const *args) {
@@ -104,9 +106,11 @@ void SwerveDrive::_calculate_module_setp(int m_idx, int m_angle, int *m_rot_setp
   // TODO: use integer arithmetic
   float t_head_setp_robot = float(_t_head_setp_world) - float(angle);  // convert from world frame to robot frame
 
-  // TODO: temp P controller for rotational velocity
-  // float rot_vel = 0.2 * (_rot_setp_world - float(_imu->get_angle()));
-  float rot_vel = _rot_vel_setp / 25;
+  // Controller for rotational velocity
+  // _rot_setp_world += _rot_vel;
+  int heading_error = _rot_setp_world - angle;
+  float rot_vel = kPHeading * float(heading_error) - kDHeading * float(_last_heading_error - heading_error);
+  _last_heading_error = heading_error;
 
   float rot_comp_mag = kModuleRadiusCm * rot_vel;
   float rot_comp_ang = (kModuleTheta[m_idx] + 90) * 3.14159 / 180;

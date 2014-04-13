@@ -34,11 +34,11 @@ void IMU::_gyro_integrate() {
 int IMU::get_angle() {
   // ts.wait();
   int angle = _gyro_angle / 10000; // TODO: make a constant
-  if (angle > 180) {
-    angle -= 360;
-  } else if (angle <= -180) {
-    angle += 360;
-  }
+  // if (angle > 180) {
+  //   angle -= 360;
+  // } else if (angle <= -180) {
+  //   angle += 360;
+  // }
   // ts.release();
   return angle;
 }

@@ -19,5 +19,8 @@ template <typename T>
 inline T smaller_ang(T x) { return mod(x + 180, 360) - 180; }
 template <typename T>
 inline T closer_ang(T x,T a) { return a + smaller_ang(x - a); }
-
+template <typename T>
+inline T smaller_half_ang(T x) { return mod(x + 90, 180) - 90; }
+template <typename T>
+inline T closer_half_ang(T x,T a) { return a + smaller_half_ang(x - a); }
 #endif

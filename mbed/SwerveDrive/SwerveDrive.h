@@ -72,7 +72,7 @@ class SwerveDrive {
     static void _module_control_static_callback(void const *args);
     static void _watchdog_static_callback(void const *args);
     void _module_control();
-    void _calculate_module_setp(int m_idx, int *m_rot_setp, int *m_vel_setp);
+    void _calculate_module_setp(int m_idx, int m_angle, int *m_rot_setp, int *m_vel_setp);
 };
 
 #endif // _SWERVEDRIVE_H_

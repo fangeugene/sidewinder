@@ -74,23 +74,22 @@ void SwerveDrive::_module_control() {
     return;
   }
 
-  SwerveDrive::_calculate_module_setp(0, &m0_rot_setp, &m0_vel_setp);
-  SwerveDrive::_calculate_module_setp(1, &m1_rot_setp, &m1_vel_setp);
-  SwerveDrive::_calculate_module_setp(2, &m2_rot_setp, &m2_vel_setp);
-
-  _m0_drive.setPower(m0_vel_setp);
-  _m1_drive.setPower(m1_vel_setp);
-  _m2_drive.setPower(m2_vel_setp);
-
-
   // 16/3 clicks per degree
   int m0_angle = _m0_steer_encoder.getPulses() * 3 / 16;
   int m1_angle = _m1_steer_encoder.getPulses() * 3 / 16;
   int m2_angle = _m2_steer_encoder.getPulses() * 3 / 16;
 
-  int m0_steer_error = closer_ang(m0_rot_setp, m0_angle) - m0_angle;
-  int m1_steer_error = closer_ang(m1_rot_setp, m1_angle) - m1_angle;
-  int m2_steer_error = closer_ang(m2_rot_setp, m2_angle) - m2_angle;
+  SwerveDrive::_calculate_module_setp(0, m0_angle, &m0_rot_setp, &m0_vel_setp);
+  SwerveDrive::_calculate_module_setp(1, m1_angle, &m1_rot_setp, &m1_vel_setp);
+  SwerveDrive::_calculate_module_setp(2, m2_angle, &m2_rot_setp, &m2_vel_setp);
+
+  _m0_drive.setPower(m0_vel_setp);
+  _m1_drive.setPower(m1_vel_setp);
+  _m2_drive.setPower(m2_vel_setp);
+
+  int m0_steer_error = m0_rot_setp - m0_angle;
+  int m1_steer_error = m1_rot_setp - m1_angle;
+  int m2_steer_error = m2_rot_setp - m2_angle;
 
   _m0_steer.setPower(kPSteering * m0_steer_error / 10 - kDSteering * _last_m0_steer_error / 10);
   _m1_steer.setPower(kPSteering * m1_steer_error / 10 - kDSteering * _last_m1_steer_error / 10);
@@ -101,7 +100,7 @@ void SwerveDrive::_module_control() {
   _last_m2_steer_error = m2_steer_error;
 }
 
-void SwerveDrive::_calculate_module_setp(int m_idx, int *m_rot_setp, int *m_vel_setp) {
+void SwerveDrive::_calculate_module_setp(int m_idx, int m_angle, int *m_rot_setp, int *m_vel_setp) {
   // TODO: use integer arithmetic
   float t_head_setp_robot = float(_t_head_setp_world) - float(angle);  // convert from world frame to robot frame
 
@@ -123,11 +122,19 @@ void SwerveDrive::_calculate_module_setp(int m_idx, int *m_rot_setp, int *m_vel_
   float xsum = x1 + x2;
   float ysum = y1 + y2;
 
-  *m_vel_setp = int(sqrt(pow(xsum, 2) + pow(ysum, 2)));
-  *m_rot_setp = int(atan(ysum / xsum) * 180 / 3.14159);
-  if (xsum < 0) {
-    *m_rot_setp += 180;
-  } else if (*m_rot_setp >= 180) {
-    *m_rot_setp -= 360;
+  int vel_setp = int(sqrt(pow(xsum, 2) + pow(ysum, 2)));
+  int rot_setp = int(atan(ysum / xsum) * 180 / 3.14159);
+  if (xsum < 0) {  // Fixing atan range
+    rot_setp += 180;
+  } else if (rot_setp >= 180) {
+    rot_setp -= 360;
   }
+
+  *m_rot_setp = closer_half_ang(rot_setp, m_angle);
+  if (mod(rot_setp, 360) == mod(*m_rot_setp, 360)) {
+    *m_vel_setp = vel_setp;
+  } else {
+    *m_vel_setp = -vel_setp;
+  }
+
 }

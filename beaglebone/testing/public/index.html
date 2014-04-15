@@ -6,11 +6,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="HandheldFriendly" content="true" />
 
-  <title>Sidewinder</title>
+  <title>Sidewinder Dashboard</title>
   <link rel="stylesheet" href="css/sidewinder.min.css">
   <script src="js/sidewinder.min.js"></script>
 </head>
 <body>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <span class="navbar-brand">Sidewinder Dashboard</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Robot Status</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="status status-negative">Disabled</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Joystick Status</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="status status-negative">Disconnected</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Camera View</h3>
+              </div>
+              <div class="panel-body">
+                <div>CAMERA IMAGE GOES HERE</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Target State</h3>
+              </div>
+              <div class="panel-body text-center">
+                <svg width="200px" height="200px">
+                  <g id="robot">
+                    <polygon points="100,25 35,137.5 165,137.5" style="fill:lime;stroke:red;stroke-width:1" />
+                    <circle cx="100" cy="50" r="5" fill="yellow" />
+                    <g id="module0">
+                      <polygon points="104,35 101,15 99,15 96,35" style="fill:blue"/>
+                      <circle id="module0power" cx="100" cy="15" r="3" fill="red" />
+                    </g>
+                    <g id="module1">
+                      <polygon points="39,147.5 36,127.5 34,127.5 31,147.5" style="fill:blue"/>
+                      <circle id="module1power" cx="35" cy="127.5" r="3" fill="red" />
+                    </g>
+                    <g id="module2">
+                      <polygon points="169,147.5 166,127.5 164,127.5 161,147.5" style="fill:blue"/>
+                      <circle id="module2power" cx="165" cy="127.5" r="3" fill="red" />
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Actual State</h3>
+              </div>
+              <div class="panel-body text-center">
+                <p>More SVG here!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Mode Selection</h3>
+          </div>
+          <div class="panel-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#teleop" data-toggle="tab">Teleop</a></li>
+              <li><a href="#tracking" data-toggle="tab">Tracking</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane active" id="teleop">
+                STUFF!
+              </div>
+              <div class="tab-pane" id="tracking">
+                OTHER STUFF!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <!--
   <div id="enable-status" style="height: 200px; width: 200px; background-color: red;"></div>
   <hr>

@@ -69,7 +69,7 @@ void SwerveDrive::set_setpoints1(int t_mag_setp_world, int t_head_setp_world, in
 
 void SwerveDrive::update_rot_setp_world(int rot_setp_diff) {
 	if (_mode == MODE_TRACK) {
-  	_rot_setp_world += rot_setp_diff;
+  	_rot_setp_world = angle + rot_setp_diff;
 	}
 }
 

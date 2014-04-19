@@ -13,6 +13,7 @@ SwerveDrive::SwerveDrive(IMU* imu,
                          _module_control_timer(SwerveDrive::_module_control_static_callback, osTimerPeriodic, this),
                          _watchdog_timer(SwerveDrive::_watchdog_static_callback, osTimerPeriodic, this) {
   _enabled = false;
+  _mode = MODE_TELEOP;
 
   _t_mag_setp_world = 0;
   _t_head_setp_world = 0;
@@ -53,10 +54,23 @@ void SwerveDrive::feed_watchdog() {
   _watchdog_timer.start(kWatchdogTimeoutMs);
 }
 
+void SwerveDrive::set_mode_teleop() {
+	_mode = MODE_TELEOP;
+}
+
+void SwerveDrive::set_mode_track() {
+	_mode = MODE_TRACK;
+}
 void SwerveDrive::set_setpoints1(int t_mag_setp_world, int t_head_setp_world, int rot_vel) {
   _t_mag_setp_world = t_mag_setp_world;
   _t_head_setp_world = t_head_setp_world;
   _rot_vel = rot_vel;
+}
+
+void SwerveDrive::update_rot_setp_world(int rot_setp_diff) {
+	if (_mode == MODE_TRACK) {
+  	_rot_setp_world += rot_setp_diff;
+	}
 }
 
 void SwerveDrive::_module_control_static_callback(void const *args) {
@@ -106,14 +120,21 @@ void SwerveDrive::_calculate_module_setp(int m_idx, int m_angle, int *m_rot_setp
   // TODO: use integer arithmetic
   float t_head_setp_robot = float(_t_head_setp_world) - float(angle);  // convert from world frame to robot frame
 
-  // Controller for rotational velocity
-  if (_rot_vel != 0) {  // Hold angle when no vel input
-    _rot_setp_world = angle;
-  }
+	if (_mode == MODE_TELEOP) {
+		if (_rot_vel != 0) {  // Hold angle when no rot vel joystick input
+			_rot_setp_world = angle;
+		}
+	}
+
+	// Controller for rotational velocity
   int heading_error = _rot_setp_world - angle;
   float rot_vel = kPHeading * float(heading_error) - kDHeading * float(_last_heading_error - heading_error);
   rot_vel = constrain(rot_vel, float(-2), float(2));  // So that rotation does not overpower translation
-  rot_vel += 0.05 * float(_rot_vel);  // Add in vel input
+
+	if (_mode == MODE_TELEOP) {
+		rot_vel += 0.05 * float(_rot_vel);  // Add in rot vel joystisck input
+  }
+	
   _last_heading_error = heading_error;
 
   float rot_comp_mag = kModuleRadiusCm * rot_vel;

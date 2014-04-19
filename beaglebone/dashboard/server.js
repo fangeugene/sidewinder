@@ -66,12 +66,23 @@ function runServer(uart, socket) {
   });
 
   uartHandler(uart);
-  socketHandler(socket);
+  socketHandler(socket, uart);
 }
 
-function socketHandler(socket) {
+function socketHandler(socket, uart) {
   socket.on('data', function(data) {
-    console.log(data.toString());
+    var split = data.toString().split(" ");
+    var x = parseInt(split[0]);
+    var y = parseInt(split[1]);
+
+    var offset_ang = 0;
+    if (x != -1 && y != -1) {
+      var offset = 160 - x;
+      offset_ang = offset / 4.5;
+      console.log("Camera x offset angle: " + offset_ang);
+    }
+    var msg = '2 ' + pad(parseInt(offset_ang+500), 3);
+    uart.write(msg + '\n');
   });
 }
 
@@ -148,3 +159,10 @@ process.on('uncaughtException', function(err) {
   // vision.kill();
   // process.exit();
 });
+
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+

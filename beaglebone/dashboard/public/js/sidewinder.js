@@ -54,10 +54,14 @@ ws.onmessage = function (evt) {
 
   } else if (split_msg[0] == '9') {
     if (split_msg[1] == '1') {
-      $('#enable-status').css('background-color', 'green');
+      $("#robot-status").text("Enabled");
+      $("#robot-status").removeClass("status-negative");
+      $("#robot-status").addClass("status-positive");
       enable = true;
     } else {
-      $('#enable-status').css('background-color', 'red');
+      $("#robot-status").text("Disabled");
+      $("#robot-status").removeClass("status-positive");
+      $("#robot-status").addClass("status-negative");
       enable = false;
     }
   }
@@ -115,12 +119,16 @@ $(document).ready(function(){
   // Joystick
   var controller = null;
   function connecthandler(e) {
-    $("#joystick-status").text("Joystick Connected!");
+    $("#joystick-status").text("Connected!");
+    $("#joystick-status").removeClass("status-negative");
+    $("#joystick-status").addClass("status-positive");
     controller = e.gamepad;
   }
 
   function disconnecthandler(e) {
-    $("#joystick-status").text("Joystick Not Connected");
+    $("#joystick-status").text("Disconnected");
+    $("#joystick-status").removeClass("status-positive");
+    $("#joystick-status").addClass("status-negative");
     controller = null;
   }
   window.addEventListener("MozGamepadConnected", connecthandler);

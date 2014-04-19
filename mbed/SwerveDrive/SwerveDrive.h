@@ -22,6 +22,13 @@ const int kDSteering = 150;
 const float kPHeading = 0.2;
 const float kDHeading = 3.0;
 
+// Modes
+typedef enum MODES {
+  MODE_TELEOP,
+  MODE_TRACK
+} Mode;
+
+
 class SwerveDrive {
   public:
     SwerveDrive(IMU* imu,
@@ -31,7 +38,12 @@ class SwerveDrive {
     void enable();
     void disable();
     void feed_watchdog();
+	
+	  void set_mode_teleop();
+	  void set_mode_track();
+	
     void set_setpoints1(int t_mag_setp_world, int t_head_setp_world, int rot_vel);
+    void update_rot_setp_world(int rot_setp_diff);
 
     int m0_rot_setp;
     int m0_vel_setp;
@@ -62,10 +74,13 @@ class SwerveDrive {
     RtosTimer _watchdog_timer;
 
     bool _enabled;
+		
+		Mode _mode;
 
     int _t_mag_setp_world;
     int _t_head_setp_world;
     int _rot_vel;
+
     int _rot_setp_world;
 
     int _last_heading_error;

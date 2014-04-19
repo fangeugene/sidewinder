@@ -45,6 +45,20 @@ void get_msg_thread(void const *args) {
           swervedrive->set_setpoints1(t_mag_setp, t_head_setp, rot_vel);
           break;
         }
+				case '2': {
+					int rot_setp_diff = (msg[2] - '0') * 100 + (msg[3] - '0') * 10 + (msg[4] - '0');
+					rot_setp_diff -= 500;
+					swervedrive->update_rot_setp_world(rot_setp_diff);
+          break;
+				}
+				case '8': {
+					if (msg[2] == '1') {
+						swervedrive->set_mode_track();
+					} else {
+						swervedrive->set_mode_teleop();
+					}
+          break;
+				}
         case '9': {
           swervedrive->feed_watchdog();
           break;
@@ -84,6 +98,7 @@ int main() {
   pc.printf("Startup Complete!\r\n");
   while (true) {
     led = !led;
+		pc.printf("%d\r\n", swervedrive->_mode);
     Thread::wait(100);
   }
 }

@@ -35,7 +35,7 @@
                     <h3 class="panel-title">Robot Status</h3>
                   </div>
                   <div class="panel-body">
-                    <div class="status status-negative">Disabled</div>
+                    <div id="robot-status" class="status status-negative">Disabled</div>
                   </div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
                     <h3 class="panel-title">Joystick Status</h3>
                   </div>
                   <div class="panel-body">
-                    <div class="status status-negative">Disconnected</div>
+                    <div id="joystick-status" class="status status-negative">Disconnected</div>
                   </div>
                 </div>
               </div>
@@ -104,8 +104,8 @@
           <div class="panel-body">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#teleop" data-toggle="tab">Teleop</a></li>
-              <li><a href="#tracking" data-toggle="tab">Tracking</a></li>
+              <li class="active"><a id="tab-teleop" href="#teleop" data-toggle="tab">Teleop</a></li>
+              <li><a id="tab-tracking" href="#tracking" data-toggle="tab">Tracking</a></li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">

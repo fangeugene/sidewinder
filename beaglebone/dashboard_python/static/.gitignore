@@ -1,0 +1,3 @@
+*.temp
+css/*.min.css
+js/*.min.js

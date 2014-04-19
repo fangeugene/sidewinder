@@ -5,6 +5,7 @@ var Uart = Serialport.SerialPort;
 var express = require('express')
 var async = require('async');
 var net = require('net');
+var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 
 var connectedClients = {};
@@ -22,8 +23,25 @@ function makeUart(callback) {
   });
 }
 
+// Create the socket for the OpenCV IPC, and return it in the callback
+function makeSocket(callback) {
+  var socket = net.createServer(function(connection) { //'connection' listener
+    console.log('webcam connected');
+    connection.on('end', function() {
+      console.log('webcam disconnected');
+    });
+    callback(null, connection);
+  });
+  socket.listen('/tmp/opencv.sock', function() { //'listening' listener
+    console.log('server bound');
+  });
+  process.on( 'SIGINT', function() { socket.close(); });
+  process.on( 'SIGTERM', function() { socket.close(); });
+  process.on( 'uncaughtException', function() { socket.close(); });
+}
+
 // Create main server
-function runServer(uart) {
+function runServer(uart, socket) {
   var app = express();
   app.use(express.static(__dirname + '/public'));
   var server = http.createServer(app);
@@ -47,16 +65,14 @@ function runServer(uart) {
     });
   });
 
-  // Testing
-  /*
-  uart.write('0 180 100 100\n');
-  uart.write('0 360 001 092\n');
-  uart.write('This is a very very very very very long sentence!\n');
-  uart.write('Hello...');
-  uart.write('...bye.\n');
-  */
-
   uartHandler(uart);
+  socketHandler(socket);
+}
+
+function socketHandler(socket) {
+  socket.on('data', function(data) {
+    console.log(data.toString());
+  });
 }
 
 function uartHandler(uart) {
@@ -78,7 +94,8 @@ function broadcastMsg(data) {
 
 // Make the uart
 async.parallel({
-    uart: makeUart
+    uart: makeUart,
+    socket: makeSocket
   },
   function(err, r) {
     /*if (err) {
@@ -86,7 +103,7 @@ async.parallel({
       vision.kill();
       process.exit();
     }*/
-    runServer(r.uart);
+    runServer(r.uart, r.socket);
 });
 
 // For global access
@@ -97,7 +114,7 @@ function monitorProcess(spawned) {
     console.log('stdout: ' + data);
   });
   spawned.stderr.on('data', function (data) {
-    console.log('stderr: ' + data);
+    // console.log('stderr: ' + data);
   });
   spawned.on('close', function (code) {
     console.log('child process exited with code ' + code);
@@ -105,6 +122,29 @@ function monitorProcess(spawned) {
     // monitorProcess(spawn(cmd, args));
   });
 }
-var cmd = 'python';
-var args = ['webcam_track.py'];
+var cmd = '../mjpg_streamer/mjpg_streamer';
+var args = ['-i','../mjpg_streamer/input_uvc.so -r 320x240 -f 30',
+            '-o','../mjpg_streamer/output_http.so -p 8081',
+            '-o','../mjpg_streamer/output_opencv.so']
 monitorProcess(spawn(cmd, args));
+
+// Cleanup code for when killed with C-c
+process.on( 'SIGINT', function() {
+  console.log("Kill signal recieved");
+  vision.kill();
+  process.exit();
+});
+
+// Cleanup code for when killed by system
+process.on( 'SIGTERM', function() {
+  console.log("Kill signal recieved");
+  vision.kill();
+  process.exit();
+});
+
+// Cleanup code for exceptions
+process.on('uncaughtException', function(err) {
+  // console.log(err.stack);
+  // vision.kill();
+  // process.exit();
+});

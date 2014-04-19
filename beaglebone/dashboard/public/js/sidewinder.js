@@ -1,4 +1,4 @@
-var ws = new WebSocket('ws://' + window.location.hostname + ':8081');
+var ws = new MozWebSocket('ws://' + window.location.hostname + ':8081');
 var enable = false;
 
 ws.onopen = function() {

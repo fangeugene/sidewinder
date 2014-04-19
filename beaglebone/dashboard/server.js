@@ -124,7 +124,7 @@ function monitorProcess(spawned) {
 }
 var cmd = '../mjpg_streamer/mjpg_streamer';
 var args = ['-i','../mjpg_streamer/input_uvc.so -r 320x240 -f 30',
-            '-o','../mjpg_streamer/output_http.so -p 8081',
+            '-o','../mjpg_streamer/output_http.so -p 8090',
             '-o','../mjpg_streamer/output_opencv.so']
 monitorProcess(spawn(cmd, args));
 

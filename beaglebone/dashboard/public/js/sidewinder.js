@@ -74,6 +74,15 @@ ws.onclose = function() {
 $(document).ready(function(){
   setInterval(function() { ws.send('9'); }, 50);  // watchdog
 
+  $('#tab-teleop').click(function() {
+    ws.send('8 0');
+  });
+
+  $('#tab-tracking').click(function () {
+    ws.send('8 1');
+  });
+
+
   var last_enable_msg = '';
   function send_enable(e) {
     var msg = '0 ' + e;

@@ -75,6 +75,8 @@ function socketHandler(socket, uart) {
     var x = parseInt(split[0]);
     var y = parseInt(split[1]);
 
+    broadcastMsg('c ' + x + ' ' + y);
+
     var offset_ang = 0;
     if (x != -1 && y != -1) {
       var offset = 160 - x;

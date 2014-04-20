@@ -64,6 +64,22 @@ ws.onmessage = function (evt) {
       $("#robot-status").addClass("status-negative");
       enable = false;
     }
+  } else if (split_msg[0] == 'c') {
+    var x = parseInt(split_msg[1]);
+    var y = parseInt(split_msg[2]);
+    var target_size = 5;
+    $('#target').css('width', target_size + 'px');
+    $('#target').css('height', target_size + 'px');
+
+    if (x == -1 || y == -1) {
+      $('#target').css('visibility', 'hidden');
+    } else {
+      $('#target').css('visibility', 'visible');
+      var width = $('#camera-view').width();
+      var scale = width / 320;
+      $('#target').css('top', y * scale - target_size / 2);
+      $('#target').css('left', x * scale - target_size / 2);
+    }
   }
 };
 ws.onclose = function() {

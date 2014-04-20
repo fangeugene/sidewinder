@@ -1,7 +1,8 @@
+var ws;
 try {
-  var ws = new MozWebSocket('ws://' + window.location.hostname + ':8081');
+  ws = new MozWebSocket('ws://' + window.location.hostname + ':8081');
 } catch (e) {
-  var ws = new WebSocket('ws://' + window.location.hostname + ':8081');
+  ws = new WebSocket('ws://' + window.location.hostname + ':8081');
 }
 var enable = false;
 
@@ -94,14 +95,23 @@ ws.onclose = function() {
 $(document).ready(function(){
   setInterval(function() { ws.send('9'); }, 50);  // watchdog
 
-  $('#tab-teleop').click(function() {
+  $('#tab-teleop-wc').click(function() {
     ws.send('8 0');
+  });
+
+  $('#tab-teleop-rc').click(function() {
+    ws.send('8 2');
   });
 
   $('#tab-tracking').click(function () {
     ws.send('8 1');
   });
 
+  function reset_gyro(r) {
+    if (r) {
+      ws.send('7');
+    }
+  }
 
   var last_enable_msg = '';
   function send_enable(e) {
@@ -170,6 +180,7 @@ $(document).ready(function(){
     } else {
       send_movement(controller.axes[1], controller.axes[0], controller.axes[3]);
       send_enable(controller.buttons[5]);
+      reset_gyro(controller.buttons[7]);
     }
   }, 20);
 });

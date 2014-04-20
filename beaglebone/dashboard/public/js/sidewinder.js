@@ -14,76 +14,85 @@ ws.onopen = function() {
 ws.onmessage = function (evt) {
   var received_msg = evt.data;
   var split_msg = received_msg.split(' ');
-  if (split_msg[0] == '0') {
-    $('#robot').attr('transform', 'rotate(' + -parseInt(split_msg[1]) + ', 100, 100)');
-  } else if (split_msg[0] == '1') {
-    $('#module0').attr('transform', 'rotate(' + -parseInt(split_msg[2]) + ', 100, 25)');
-    $('#module1').attr('transform', 'rotate(' + -parseInt(split_msg[4]) + ', 35, 137.5)');
-    $('#module2').attr('transform', 'rotate(' + -parseInt(split_msg[6]) + ', 165, 137.5)');
+  switch(split_msg[0]) {
+    case '0': {
+      $('#robot').attr('transform', 'rotate(' + -parseInt(split_msg[1]) + ', 100, 100)');
+      break;
+    }
+    case '1': {
+      $('#module0').attr('transform', 'rotate(' + -parseInt(split_msg[2]) + ', 100, 25)');
+      $('#module1').attr('transform', 'rotate(' + -parseInt(split_msg[4]) + ', 35, 137.5)');
+      $('#module2').attr('transform', 'rotate(' + -parseInt(split_msg[6]) + ', 165, 137.5)');
 
-    var m0power = parseInt(split_msg[1]);
-    var m0r = 0;
-    if (m0power != 0) {
-      m0r = Math.log(Math.abs(m0power));
-    }
-    $('#module0power').attr('r', m0r);
-    if (m0power >= 0) {
-      $('#module0power').attr('cy', '15');
-    } else {
-      $('#module0power').attr('cy', '35');
-    }
+      var m0power = parseInt(split_msg[1]);
+      var m0r = 0;
+      if (m0power != 0) {
+        m0r = Math.log(Math.abs(m0power));
+      }
+      $('#module0power').attr('r', m0r);
+      if (m0power >= 0) {
+        $('#module0power').attr('cy', '15');
+      } else {
+        $('#module0power').attr('cy', '35');
+      }
 
-    var m1power = parseInt(split_msg[3]);
-    var m1r = 0;
-    if (m1power != 0) {
-      m1r = Math.log(Math.abs(m1power));
-    }
-    $('#module1power').attr('r', m1r);
-    if (m1power >= 0) {
-      $('#module1power').attr('cy', '127.5');
-    } else {
-      $('#module1power').attr('cy', '147.5');
-    }
+      var m1power = parseInt(split_msg[3]);
+      var m1r = 0;
+      if (m1power != 0) {
+        m1r = Math.log(Math.abs(m1power));
+      }
+      $('#module1power').attr('r', m1r);
+      if (m1power >= 0) {
+        $('#module1power').attr('cy', '127.5');
+      } else {
+        $('#module1power').attr('cy', '147.5');
+      }
 
-    var m2power = parseInt(split_msg[5]);
-    var m2r = 0;
-    if (m2power != 0) {
-      m2r = Math.log(Math.abs(m2power));
+      var m2power = parseInt(split_msg[5]);
+      var m2r = 0;
+      if (m2power != 0) {
+        m2r = Math.log(Math.abs(m2power));
+      }
+      $('#module2power').attr('r', m2r);
+      if (m2power >= 0) {
+        $('#module2power').attr('cy', '127.5');
+      } else {
+        $('#module2power').attr('cy', '147.5');
+      }
+      break;
     }
-    $('#module2power').attr('r', m2r);
-    if (m2power >= 0) {
-      $('#module2power').attr('cy', '127.5');
-    } else {
-      $('#module2power').attr('cy', '147.5');
+    case '9': {
+      return;
+      if (split_msg[1] == '1') {
+        $("#robot-status").text("Enabled");
+        $("#robot-status").removeClass("status-negative");
+        $("#robot-status").addClass("status-positive");
+        enable = true;
+      } else {
+        $("#robot-status").text("Disabled");
+        $("#robot-status").removeClass("status-positive");
+        $("#robot-status").addClass("status-negative");
+        enable = false;
+      }
+      break;
     }
+    case 'c': {
+      var x = parseInt(split_msg[1]);
+      var y = parseInt(split_msg[2]);
+      var target_size = 5;
+      $('#target').css('width', target_size + 'px');
+      $('#target').css('height', target_size + 'px');
 
-  } else if (split_msg[0] == '9') {
-    if (split_msg[1] == '1') {
-      $("#robot-status").text("Enabled");
-      $("#robot-status").removeClass("status-negative");
-      $("#robot-status").addClass("status-positive");
-      enable = true;
-    } else {
-      $("#robot-status").text("Disabled");
-      $("#robot-status").removeClass("status-positive");
-      $("#robot-status").addClass("status-negative");
-      enable = false;
-    }
-  } else if (split_msg[0] == 'c') {
-    var x = parseInt(split_msg[1]);
-    var y = parseInt(split_msg[2]);
-    var target_size = 5;
-    $('#target').css('width', target_size + 'px');
-    $('#target').css('height', target_size + 'px');
-
-    if (x == -1 || y == -1) {
-      $('#target').css('visibility', 'hidden');
-    } else {
-      $('#target').css('visibility', 'visible');
-      var width = $('#camera-view').width();
-      var scale = width / 320;
-      $('#target').css('top', y * scale - target_size / 2);
-      $('#target').css('left', x * scale - target_size / 2);
+      if (x == -1 || y == -1) {
+        $('#target').css('visibility', 'hidden');
+      } else {
+        $('#target').css('visibility', 'visible');
+        var width = $('#camera-view').width();
+        var scale = width / 320;
+        $('#target').css('top', y * scale - target_size / 2);
+        $('#target').css('left', x * scale - target_size / 2);
+      }
+      break;
     }
   }
 };

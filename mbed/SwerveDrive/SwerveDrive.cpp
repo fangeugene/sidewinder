@@ -13,7 +13,7 @@ SwerveDrive::SwerveDrive(IMU* imu,
                          _module_control_timer(SwerveDrive::_module_control_static_callback, osTimerPeriodic, this),
                          _watchdog_timer(SwerveDrive::_watchdog_static_callback, osTimerPeriodic, this) {
   _enabled = false;
-  _mode = MODE_TELEOP;
+  _mode = MODE_TELEOP_WC;
 
   _t_mag_setp_world = 0;
   _t_head_setp_world = 0;
@@ -54,8 +54,12 @@ void SwerveDrive::feed_watchdog() {
   _watchdog_timer.start(kWatchdogTimeoutMs);
 }
 
-void SwerveDrive::set_mode_teleop() {
-	_mode = MODE_TELEOP;
+void SwerveDrive::set_mode_teleop_wc() {
+	_mode = MODE_TELEOP_WC;
+}
+
+void SwerveDrive::set_mode_teleop_rc() {
+	_mode = MODE_TELEOP_RC;
 }
 
 void SwerveDrive::set_mode_track() {
@@ -118,9 +122,14 @@ void SwerveDrive::_module_control() {
 
 void SwerveDrive::_calculate_module_setp(int m_idx, int m_angle, int *m_rot_setp, int *m_vel_setp) {
   // TODO: use integer arithmetic
-  float t_head_setp_robot = float(_t_head_setp_world) - float(angle);  // convert from world frame to robot frame
+	float t_head_setp_robot;
+	if (_mode == MODE_TELEOP_RC) {
+		t_head_setp_robot = float(_t_head_setp_world);
+	} else {
+    t_head_setp_robot = float(_t_head_setp_world) - float(angle);  // convert from world frame to robot frame
+	}
 
-	if (_mode == MODE_TELEOP) {
+	if (_mode == MODE_TELEOP_WC || _mode == MODE_TELEOP_RC) {
 		if (_rot_vel != 0) {  // Hold angle when no rot vel joystick input
 			_rot_setp_world = angle;
 		}
@@ -131,7 +140,7 @@ void SwerveDrive::_calculate_module_setp(int m_idx, int m_angle, int *m_rot_setp
   float rot_vel = kPHeading * float(heading_error) - kDHeading * float(_last_heading_error - heading_error);
   rot_vel = constrain(rot_vel, float(-2), float(2));  // So that rotation does not overpower translation
 
-	if (_mode == MODE_TELEOP) {
+	if (_mode == MODE_TELEOP_WC || _mode == MODE_TELEOP_RC) {
 		rot_vel += 0.05 * float(_rot_vel);  // Add in rot vel joystisck input
   }
 	

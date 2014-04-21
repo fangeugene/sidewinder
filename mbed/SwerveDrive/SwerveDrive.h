@@ -24,7 +24,8 @@ const float kDHeading = 3.0;
 
 // Modes
 typedef enum MODES {
-  MODE_TELEOP,
+  MODE_TELEOP_WC,
+	MODE_TELEOP_RC,
   MODE_TRACK
 } Mode;
 
@@ -39,7 +40,8 @@ class SwerveDrive {
     void disable();
     void feed_watchdog();
 	
-	  void set_mode_teleop();
+	  void set_mode_teleop_wc();
+	  void set_mode_teleop_rc();
 	  void set_mode_track();
 	
     void set_setpoints1(int t_mag_setp_world, int t_head_setp_world, int rot_vel);

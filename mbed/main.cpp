@@ -54,8 +54,10 @@ void get_msg_thread(void const *args) {
 				case '8': {
 					if (msg[2] == '1') {
 						swervedrive->set_mode_track();
+					} else if (msg[2] == '2') {
+						swervedrive->set_mode_teleop_rc();
 					} else {
-						swervedrive->set_mode_teleop();
+						swervedrive->set_mode_teleop_wc();
 					}
           break;
 				}

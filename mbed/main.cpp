@@ -51,6 +51,10 @@ void get_msg_thread(void const *args) {
 					swervedrive->update_rot_setp_world(rot_setp_diff);
           break;
 				}
+				case '7': {
+					imu->reset();
+				  break;
+				}
 				case '8': {
 					if (msg[2] == '1') {
 						swervedrive->set_mode_track();

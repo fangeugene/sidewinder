@@ -8,6 +8,10 @@ IMU::IMU(PinName gyro_sda, PinName gyro_scl, PinName mag_sda, PinName mag_scl):
   _gyro_integration_timer.start(kGyroIntegrationMs);
 }
 
+void IMU::reset() {
+	_gyro_angle = 0;
+}
+
 void IMU::_gyro_integration_static_callback(void const *args) {
   // Static callback -- see https://mbed.org/forum/mbed/topic/4388/ for more info
   IMU *instance = (IMU*)args;

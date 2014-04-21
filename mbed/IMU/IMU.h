@@ -13,6 +13,7 @@ class IMU {
   public:
     IMU(PinName gyro_sda, PinName gyro_scl, PinName mag_sda, PinName mag_scl);
     int get_angle();
+	  void reset();
 
   // protected:
     ITG3200 _gyro;

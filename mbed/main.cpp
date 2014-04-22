@@ -104,7 +104,7 @@ int main() {
   pc.printf("Startup Complete!\r\n");
   while (true) {
     led = !led;
-		pc.printf("%d\r\n", swervedrive->_mode);
+		pc.printf("%d\r\n", imu->get_angle());
     Thread::wait(100);
   }
 }

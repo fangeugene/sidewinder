@@ -19,7 +19,7 @@ void IMU::_gyro_integration_static_callback(void const *args) {
 }
 
 void IMU::_gyro_calibrate() {
-  _gyro_angle = 0;
+  IMU::reset();
   _gyro.setLpBandwidth(LPFBW_256HZ);
 
   // Compute gyro drift
@@ -44,5 +44,5 @@ int IMU::get_angle() {
   //   angle += 360;
   // }
   // ts.release();
-  return angle;
+  return angle + 180;
 }

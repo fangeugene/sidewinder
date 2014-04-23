@@ -5,6 +5,7 @@ try {
   ws = new WebSocket('ws://' + window.location.hostname + ':8081');
 }
 var enable = false;
+var deadman = false;
 
 ws.onopen = function() {
   // Web Socket is connected, send data using send()
@@ -63,18 +64,18 @@ ws.onmessage = function (evt) {
     }
     case '9': {
       if (split_msg[1] == '1') {
-        if (!enable) {
-          $("#robot-status").text("Enabled");
+        if (!deadman) {
+          $("#robot-status").text("Deadman Pressed");
           $("#robot-status").removeClass("status-negative");
           $("#robot-status").addClass("status-positive");
-          enable = true;
+          deadman = true;
         }
       } else {
-        if (enable) {
-          $("#robot-status").text("Disabled");
+        if (deadman) {
+          $("#robot-status").text("Deadman Released");
           $("#robot-status").removeClass("status-positive");
           $("#robot-status").addClass("status-negative");
-          enable = false;
+          deadman = false;
         }
       }
       break;
@@ -119,6 +120,34 @@ $(document).ready(function(){
     ws.send('8 1');
   });
 
+  // $('#disable-btn').click(function () {
+  //   var btn = $(this);
+  //   btn.button('toggle');
+  //   enable = !enable;
+  //   if (enable) {
+  //     btn.text('Enabled');
+  //   } else {
+  //     btn.text('Disabled');
+  //   }
+  // });
+
+  // Spacebar disable
+  $(window).keypress(function(e) {
+    if (e.keyCode == 0) {
+      if (enable) {
+        enable = false;
+        $('#disable-btn').text('Disabled');
+        $('#disable-btn').button('toggle');
+      }
+    } else if (e.keyCode = 13) {
+      if (!enable) {
+        enable = true;
+        $('#disable-btn').text('Enabled');
+        $('#disable-btn').button('toggle');
+      }
+    }
+  });
+
   function reset_gyro(r) {
     if (r) {
       ws.send('7');
@@ -126,7 +155,11 @@ $(document).ready(function(){
   }
 
   var last_enable_msg = '';
-  function send_enable(e) {
+  function send_enable(d) {
+    var e = '0';
+    if (d && enable) {
+      e = '1';
+    }
     var msg = '0 ' + e;
     if (last_enable_msg != msg) {
       ws.send(msg);

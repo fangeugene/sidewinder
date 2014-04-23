@@ -18,7 +18,9 @@
   <div class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <span class="navbar-brand">Sidewinder Dashboard</span>
+        <span class="navbar-brand">
+          <img src="SidewinderFinalWhite.PNG" style="height: 35px; margin-top: -8px;"/>
+        </span>
       </div>
     </div>
   </div>
@@ -33,7 +35,14 @@
                 <h3 class="panel-title">Robot Status</h3>
               </div>
               <div class="panel-body">
-                <div id="robot-status" class="status status-negative">Disabled</div>
+                <div class="row">
+                  <div class="col-xs-4">
+                    <button id="disable-btn" type="button" class="btn btn-block btn-default">Disabled</button>
+                  </div>
+                  <div class="col-xs-8">
+                    <div id="robot-status" class="status status-negative">Deadman Released</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

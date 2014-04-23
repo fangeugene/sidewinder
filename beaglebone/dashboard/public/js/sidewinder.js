@@ -62,17 +62,20 @@ ws.onmessage = function (evt) {
       break;
     }
     case '9': {
-      return;
       if (split_msg[1] == '1') {
-        $("#robot-status").text("Enabled");
-        $("#robot-status").removeClass("status-negative");
-        $("#robot-status").addClass("status-positive");
-        enable = true;
+        if (!enable) {
+          $("#robot-status").text("Enabled");
+          $("#robot-status").removeClass("status-negative");
+          $("#robot-status").addClass("status-positive");
+          enable = true;
+        }
       } else {
-        $("#robot-status").text("Disabled");
-        $("#robot-status").removeClass("status-positive");
-        $("#robot-status").addClass("status-negative");
-        enable = false;
+        if (enable) {
+          $("#robot-status").text("Disabled");
+          $("#robot-status").removeClass("status-positive");
+          $("#robot-status").addClass("status-negative");
+          enable = false;
+        }
       }
       break;
     }

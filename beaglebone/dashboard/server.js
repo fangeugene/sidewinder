@@ -80,7 +80,7 @@ function socketHandler(socket, uart) {
     var offset_ang = 0;
     if (x != -1 && y != -1) {
       var offset = 160 - x;
-      offset_ang = offset / 4.5;
+      offset_ang = offset / 12.0;
       console.log("Camera x offset angle: " + offset_ang);
     }
     var msg = '2 ' + pad(parseInt(offset_ang+500), 3);

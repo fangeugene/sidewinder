@@ -25,103 +25,82 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-sm-8">
         <div class="row">
-          <div class="col-sm-8">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Robot Status</h3>
-                  </div>
-                  <div class="panel-body">
-                    <div id="robot-status" class="status status-negative">Disabled</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Joystick Status</h3>
-                  </div>
-                  <div class="panel-body">
-                    <div id="joystick-status" class="status status-negative">Disconnected</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="col-sm-6">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">Camera View</h3>
+                <h3 class="panel-title">Robot Status</h3>
               </div>
               <div class="panel-body">
-                <div style="position: relative;">
-                  <img id="camera-view" src="http://192.168.0.100:8090/?action=stream" style="width: 100%;"/>
-                  <div id="target" style="background-color: red; height: 10px; width: 10px; position: absolute; top: 0; left: 0; z-index: 5;"></div>
-                </div>
+                <div id="robot-status" class="status status-negative">Disabled</div>
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">Target State</h3>
+                <h3 class="panel-title">Joystick Status</h3>
               </div>
-              <div class="panel-body text-center">
-                <svg width="200px" height="200px">
-                  <g id="robot">
-                    <polygon points="100,25 35,137.5 165,137.5" style="fill:lime;stroke:red;stroke-width:1" />
-                    <circle cx="100" cy="50" r="5" fill="yellow" />
-                    <g id="module0">
-                      <polygon points="104,35 101,15 99,15 96,35" style="fill:blue"/>
-                      <circle id="module0power" cx="100" cy="15" r="3" fill="red" />
-                    </g>
-                    <g id="module1">
-                      <polygon points="39,147.5 36,127.5 34,127.5 31,147.5" style="fill:blue"/>
-                      <circle id="module1power" cx="35" cy="127.5" r="3" fill="red" />
-                    </g>
-                    <g id="module2">
-                      <polygon points="169,147.5 166,127.5 164,127.5 161,147.5" style="fill:blue"/>
-                      <circle id="module2power" cx="165" cy="127.5" r="3" fill="red" />
-                    </g>
-                  </g>
-                </svg>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Actual State</h3>
-              </div>
-              <div class="panel-body text-center">
-                <p>More SVG here!</p>
+              <div class="panel-body">
+                <div id="joystick-status" class="status status-negative">Disconnected</div>
               </div>
             </div>
           </div>
         </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Camera View</h3>
+          </div>
+          <div class="panel-body">
+            <div style="position: relative;">
+              <img id="camera-view" src="http://192.168.0.100:8090/?action=stream" style="width: 100%;"/>
+              <div id="target" style="background-color: red; height: 10px; width: 10px; position: absolute; top: 0; left: 0; z-index: 5;"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-lg-4">
+      <div class="col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Target State</h3>
+          </div>
+          <div class="panel-body text-center">
+            <svg width="200px" height="200px">
+              <g id="robot">
+                <polygon points="100,25 35,137.5 165,137.5" style="fill:lime;stroke:red;stroke-width:1" />
+                <circle cx="100" cy="50" r="5" fill="yellow" />
+                <g id="module0">
+                  <polygon points="104,35 101,15 99,15 96,35" style="fill:blue"/>
+                  <circle id="module0power" cx="100" cy="15" r="3" fill="red" />
+                </g>
+                <g id="module1">
+                  <polygon points="39,147.5 36,127.5 34,127.5 31,147.5" style="fill:blue"/>
+                  <circle id="module1power" cx="35" cy="127.5" r="3" fill="red" />
+                </g>
+                <g id="module2">
+                  <polygon points="169,147.5 166,127.5 164,127.5 161,147.5" style="fill:blue"/>
+                  <circle id="module2power" cx="165" cy="127.5" r="3" fill="red" />
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">Mode Selection</h3>
           </div>
-          <div class="panel-body">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
-              <li class="active"><a id="tab-teleop-wc" href="#teleop-wc" data-toggle="tab">Teleop (WC)</a></li>
-              <li><a id="tab-teleop-rc" href="#teleop-rc" data-toggle="tab">Teleop (RC)</a></li>
-              <li><a id="tab-tracking" href="#tracking" data-toggle="tab">Tracking</a></li>
-            </ul>
-            <!-- Tab panes -->
-            <div class="tab-content">
-              <div class="tab-pane active" id="teleop-wc">
-                STUFF!
-              </div>
-              <div class="tab-pane" id="teleop-rc">
-                OTHER STUFF!
-              </div>
-              <div class="tab-pane" id="tracking">
-                MOAR OTHER STUFF!
-              </div>
+          <div class="panel-body text-center">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-primary">
+                <input type="radio" name="options" id="tab-teleop-wc"> Teleop (WC)
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="options" id="tab-teleop-rc"> Teleop (RC)
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="options" id="tab-tracking"> Tracking
+              </label>
             </div>
           </div>
         </div>

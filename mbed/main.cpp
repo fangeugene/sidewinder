@@ -10,7 +10,7 @@
 MODSERIAL pc(USBTX, USBRX);
 BeagleBone bone(PTE16, PTE17);
 
-MotorDriver m0_steer(PTB1, PTA6, PTD6); // 2
+MotorDriver m0_steer(PTC1, PTA6, PTD6); // 2
 MotorDriver m0_drive(PTB2, PTA7, PTD4); // 3
 MotorDriver m1_steer(PTB3, PTC16, PTD2); // 4
 MotorDriver m1_drive(PTC2, PTC13, PTA13);   // 5
@@ -78,13 +78,12 @@ void get_msg_thread(void const *args) {
 void send_msg_thread(void const *args) {
   while (true) {
     bone.serial.printf("0 %d\n", imu->get_angle());
-    swervedrive->angle = imu->get_angle();
     bone.serial.printf("1 %d %d %d %d %d %d\n",
       swervedrive->m0_vel_setp, swervedrive->m0_rot_setp,
       swervedrive->m1_vel_setp, swervedrive->m1_rot_setp,
       swervedrive->m2_vel_setp, swervedrive->m2_rot_setp);
     bone.serial.printf("9 %d\n", swervedrive->_enabled);
-    Thread::wait(20); // 50 Hz
+    Thread::wait(40); // 25 Hz
   }
 }
 
@@ -104,7 +103,7 @@ int main() {
   pc.printf("Startup Complete!\r\n");
   while (true) {
     led = !led;
-		pc.printf("%d\r\n", swervedrive->_mode);
-    Thread::wait(100);
+    swervedrive->angle = imu->get_angle();
+    Thread::wait(5);
   }
 }

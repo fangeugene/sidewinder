@@ -19,7 +19,7 @@ const int kSteerEncoderCPR = 192;
 const int kPSteering = 200;
 const int kDSteering = 150;
 
-const float kPHeading = 0.2;
+const float kPHeading = 0.5;
 const float kDHeading = 3.0;
 
 // Modes

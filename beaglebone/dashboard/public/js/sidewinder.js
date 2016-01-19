@@ -201,31 +201,24 @@ $(document).ready(function(){
   }
 
   // Joystick
-  var controller = null;
-  function connecthandler(e) {
-    $("#joystick-status").text("Connected!");
-    $("#joystick-status").removeClass("status-negative");
-    $("#joystick-status").addClass("status-positive");
-    controller = e.gamepad;
-  }
-
-  function disconnecthandler(e) {
-    $("#joystick-status").text("Disconnected");
-    $("#joystick-status").removeClass("status-positive");
-    $("#joystick-status").addClass("status-negative");
-    controller = null;
-  }
-  window.addEventListener("MozGamepadConnected", connecthandler);
-  window.addEventListener("MozGamepadDisconnected", disconnecthandler);
-
   setInterval(function() {
+    var controller = navigator.getGamepads()[0];
     if (controller == null) {
+      $("#joystick-status").text("Disconnected");
+      $("#joystick-status").removeClass("status-positive");
+      $("#joystick-status").addClass("status-negative");
+
+
       send_movement(0, 0, 0);
       send_enable(0);
     } else {
-      send_movement(controller.axes[1], controller.axes[0], controller.axes[3]);
-      send_enable(controller.buttons[5]);
-      reset_gyro(controller.buttons[7]);
+      $("#joystick-status").text("Connected!");
+      $("#joystick-status").removeClass("status-negative");
+      $("#joystick-status").addClass("status-positive");
+
+      send_movement(-controller.axes[1], -controller.axes[0], controller.axes[5]);
+      send_enable(controller.buttons[0].pressed);
+      reset_gyro(controller.buttons[7].pressed);
     }
   }, 20);
 });

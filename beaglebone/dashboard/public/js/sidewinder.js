@@ -216,9 +216,9 @@ $(document).ready(function(){
       $("#joystick-status").removeClass("status-negative");
       $("#joystick-status").addClass("status-positive");
 
-      send_movement(-controller.axes[1], -controller.axes[0], controller.axes[5]);
+      send_movement(-controller.axes[1], controller.axes[0], controller.axes[2]);
       send_enable(controller.buttons[0].pressed);
-      reset_gyro(controller.buttons[7].pressed);
+      reset_gyro(controller.buttons[1].pressed);
     }
   }, 20);
 });
